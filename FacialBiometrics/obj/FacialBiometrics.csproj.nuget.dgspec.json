@@ -1,25 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rafa_\\Documents\\Repositorios\\FacialBiometrics\\FacialBiometrics\\FacialBiometrics.csproj": {}
+    "C:\\Users\\Luiz\\source\\repos\\FacialBiometrics\\FacialBiometrics\\FacialBiometrics.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rafa_\\Documents\\Repositorios\\FacialBiometrics\\FacialBiometrics\\FacialBiometrics.csproj": {
+    "C:\\Users\\Luiz\\source\\repos\\FacialBiometrics\\FacialBiometrics\\FacialBiometrics.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rafa_\\Documents\\Repositorios\\FacialBiometrics\\FacialBiometrics\\FacialBiometrics.csproj",
+        "projectUniqueName": "C:\\Users\\Luiz\\source\\repos\\FacialBiometrics\\FacialBiometrics\\FacialBiometrics.csproj",
         "projectName": "FacialBiometrics",
-        "projectPath": "C:\\Users\\rafa_\\Documents\\Repositorios\\FacialBiometrics\\FacialBiometrics\\FacialBiometrics.csproj",
-        "packagesPath": "C:\\Users\\rafa_\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rafa_\\Documents\\Repositorios\\FacialBiometrics\\FacialBiometrics\\obj\\",
+        "projectPath": "C:\\Users\\Luiz\\source\\repos\\FacialBiometrics\\FacialBiometrics\\FacialBiometrics.csproj",
+        "packagesPath": "C:\\Users\\Luiz\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Luiz\\source\\repos\\FacialBiometrics\\FacialBiometrics\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\rafa_\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Luiz\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -62,7 +57,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
         }
       }
     }
