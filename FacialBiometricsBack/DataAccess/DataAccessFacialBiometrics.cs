@@ -9,9 +9,10 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
     public class DataAccessFacialBiometrics : IDataAccessFacialBiometrics
     {
         private string connectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=RuralPropertiesInformations;Integrated Security=SSPI";
-        public void CreateUser(UserInfo userInfo)
+
+        public int CreateUser(UserInfo userInfo)
         {
-            string query = "insert into UserInfo values (@P0, @P1, @P2, @P3, @P4)";
+            string query = "insert into UserInfo values (@P0, @P1, @P2, @P3, @P4); SELECT SCOPE_IDENTITY();";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -25,6 +26,26 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
                     cmd.Parameters.Add(new SqlParameter("P2", userInfo.Password));
                     cmd.Parameters.Add(new SqlParameter("P3", userInfo.SaltPassword));
                     cmd.Parameters.Add(new SqlParameter("P4", userInfo.UserPositionInfo.IdUserPosition));
+
+                    return Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+        }
+
+        public void CreateFacialBiometrics(UsersFacialBiometrics userImages)
+        {
+            string query = "insert into UsersFacialBiometrics values (@P0, @P1, @P2)";
+
+            using(SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.Add(new SqlParameter("P0", userImages.ImageName));
+                    cmd.Parameters.Add(new SqlParameter("P1", userImages.ImageBytes));
+                    cmd.Parameters.Add(new SqlParameter("P2", userImages.User.IdUser));
                     cmd.ExecuteNonQuery();
                 }
             }

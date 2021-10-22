@@ -7,8 +7,8 @@ namespace FacialBiometricsBack.Models
 {
     public class UserFaceImg
     {
-        public string metaDados { get; set; }
-        public string extensao { get; set; }
+        public string metaData { get; set; }
+        public string extension { get; set; }
         public Byte[] imageBytes { get; set; }
     }
 }

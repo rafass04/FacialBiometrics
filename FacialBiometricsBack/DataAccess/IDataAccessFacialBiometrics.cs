@@ -4,7 +4,9 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
 {
     public interface IDataAccessFacialBiometrics
     {
-        void CreateUser(UserInfo userInfo);
+        int CreateUser(UserInfo userInfo);
+
+        void CreateFacialBiometrics(UsersFacialBiometrics userImages);
 
         int GetUserPosition(UserInfo userInfo);
 

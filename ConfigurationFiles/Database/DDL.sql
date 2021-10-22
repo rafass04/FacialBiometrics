@@ -20,6 +20,7 @@ create table UserInfo(
 
 create table UsersFacialBiometrics(
 	id_img int identity(1,1) primary key,
+	name_img varchar(50) not null,
 	user_img image not null,
 	id_user int,
 

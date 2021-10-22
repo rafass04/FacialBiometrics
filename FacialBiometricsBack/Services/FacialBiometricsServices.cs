@@ -16,19 +16,34 @@ namespace FacialBiometricsBack.Services
             _dataAccess = dataAccess;
         }
 
-        public void CreateUser(UserInfo userInfo)
+        public int CreateUser(UserInfo userInfo)
         {
             try
             {
                 if (userInfo == null) throw new ArgumentNullException(nameof(userInfo));
 
-                _dataAccess.CreateUser(userInfo);
+                return _dataAccess.CreateUser(userInfo);
             }
             catch
             {
                 throw;
             }
         }
+
+        public void CreateFacialBiometrics(UsersFacialBiometrics userImages)
+        {
+            try
+            {
+                if (userImages == null) throw new ArgumentNullException(nameof(userImages));
+
+                _dataAccess.CreateFacialBiometrics(userImages);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
 
         public RuralPropertiesInfo GetRuralInfo(UserInfo userInfo)
         {

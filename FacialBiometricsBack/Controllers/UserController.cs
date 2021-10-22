@@ -1,4 +1,5 @@
 ﻿using FacialBiometricsBack.Models;
+using FacialBiometricsBack.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,12 +14,19 @@ namespace FacialBiometricsBack.Controllers
     [ApiController]
     public class UserController : Controller
     {
+        private IFacialBiometricsServices _facialBiometricsService;
+
+        public UserController(IFacialBiometricsServices facialBiometricsServices)
+        {
+            _facialBiometricsService = facialBiometricsServices;
+        }
+
         public JsonResult GetTeste()
         {
             var dados = new
             {
                 message = "Teste de api"
-            };
+            };            
 
             return Json(dados);
         }
@@ -41,8 +49,8 @@ namespace FacialBiometricsBack.Controllers
 
                     imageDados.Add(new UserFaceImg
                     {
-                        metaDados = imgDados[0],
-                        extensao = imgDados[0].Split(';')[0].Split('/')[1],
+                        metaData = imgDados[0],
+                        extension = imgDados[0].Split(';')[0].Split('/')[1],
                         imageBytes = Convert.FromBase64String(imgDados[1])
                     });
 
