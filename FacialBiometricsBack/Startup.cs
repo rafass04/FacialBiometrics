@@ -1,4 +1,5 @@
 using FacialBiometricsBack.DataAccessFacialBiometrics;
+using FacialBiometricsBack.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +23,7 @@ namespace FacialBiometrics
             services.AddControllers();
             services.AddMvc();
             services.AddSingleton<IDataAccessFacialBiometrics, DataAccessFacialBiometrics>();
+            services.AddSingleton<IFacialBiometricsServices, FacialBiometricsServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,7 @@
 create database RuralPropertiesInformations
 
+use RuralPropertiesInformations
+
 create table UserPosition(
 	id_user_position int identity(1,1) primary key,
 	name_user_position varchar(50) not null
@@ -32,3 +34,7 @@ create table RuralPropertiesInfo(
 
 	foreign key(id_user_position) references UserPosition(id_user_position)
 )
+
+insert into UserPosition values ('N1');
+insert into UserPosition values ('N2');
+insert into UserPosition values ('N3');
