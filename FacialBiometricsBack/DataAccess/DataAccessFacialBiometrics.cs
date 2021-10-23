@@ -10,6 +10,7 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
     {
         private string connectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=RuralPropertiesInformations;Integrated Security=SSPI";
 
+
         public int CreateUser(UserInfo userInfo)
         {
             string query = "insert into UserInfo values (@P0, @P1, @P2, @P3, @P4); SELECT SCOPE_IDENTITY();";
@@ -45,7 +46,7 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.Add(new SqlParameter("P0", userImages.ImageName));
                     cmd.Parameters.Add(new SqlParameter("P1", userImages.ImageBytes));
-                    cmd.Parameters.Add(new SqlParameter("P2", userImages.User.IdUser));
+                    cmd.Parameters.Add(new SqlParameter("P2", userImages.IdUser));
                     cmd.ExecuteNonQuery();
                 }
             }

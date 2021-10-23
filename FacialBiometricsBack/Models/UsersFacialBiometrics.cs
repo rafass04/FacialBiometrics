@@ -7,6 +7,6 @@ namespace FacialBiometrics.Models
         public int IdImg { get; set; }
         public string ImageName { get; set; }
         public Byte[] ImageBytes { get; set; }
-        public UserInfo User { get; set; }
+        public int IdUser { get; set; }
     }
 }

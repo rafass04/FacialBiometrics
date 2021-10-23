@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace FacialBiometricsBack.Models
 {
@@ -22,6 +21,9 @@ namespace FacialBiometricsBack.Models
 
         [Required]
         public List<string> face_images { get; set; }
+
+        [Required]
+        public int id_user_position { get; set; }
 
     }
 }
