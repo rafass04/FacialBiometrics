@@ -1,5 +1,6 @@
 ﻿using FacialBiometrics.Models;
 using FacialBiometricsBack.DataAccessFacialBiometrics;
+using FacialBiometricsBack.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,6 +70,14 @@ namespace FacialBiometricsBack.Services
             }
             catch
             {
+                throw;
+            }
+        }
+
+        public List<ArticleModel> GetArticles(int idUser){
+            try{
+                return _dataAccess.GetArticles(idUser);
+            }catch{
                 throw;
             }
         }

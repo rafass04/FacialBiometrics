@@ -33,7 +33,7 @@ namespace FacialBiometricsBack.Controllers
             return Json(dados);
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         public JsonResult CadastroUser(UserFrontModel dadosUser)
         {
             if (ModelState.IsValid)
@@ -85,10 +85,8 @@ namespace FacialBiometricsBack.Controllers
         }
 
         [HttpPost("validate")]
-        public JsonResult validateLogin(string username, string password, List<string> face_images){
-            //Se login inválido retorna false
-            //return Json(new { isValid = true});
-            Console.WriteLine($">validateLogin: username({username}), password({password}), face_images({String.Join(",",face_images)})");
+        public JsonResult validateLogin(LoginModel userCredentials){
+            Console.WriteLine($">validateLogin: username({userCredentials.username}), password({userCredentials.password}), qtd face_images({userCredentials.face_images.Count()})");
             //Inserir validação das imagens enviadas do rosto
             
             return Json(new { isValid = true, levelAccess = 1});
@@ -101,22 +99,7 @@ namespace FacialBiometricsBack.Controllers
 
             Console.WriteLine(">getArticles: idUser("+idUser+")");
             
-            List<ArticleModel> list_articles = new List<ArticleModel>();
-            list_articles.Add(new ArticleModel{
-                idArticle = 1,
-                title = "Teste de título 1",
-                content = "Conteúdo teste aiodhi9asd io ",
-            });
-            list_articles.Add(new ArticleModel{
-                idArticle = 2,
-                title = "Teste de título 2",
-                content = "Conteúdo teste aiodhi9asd io ",
-            });
-            list_articles.Add(new ArticleModel{
-                idArticle = 3 ,
-                title = "Teste de título 3",
-                content = "Conteúdo teste aiodhi9asd io ",
-            });
+            List<ArticleModel> list_articles = _facialBiometricsService.GetArticles(idUser);
 
             return Json(new { listArticles = list_articles });
         }

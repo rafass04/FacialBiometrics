@@ -1,5 +1,7 @@
 ﻿using FacialBiometrics.Models;
+using FacialBiometricsBack.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
@@ -103,6 +105,36 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
                     }
 
                     return idUser;
+                }
+            }
+        }
+
+        public List<ArticleModel> GetArticles(int idUser){
+            string query = @"
+                SELECT * FROM ArticleChemicalProduct A 
+                    where A.id_user_position = (select U.id_user_position FROM UserInfo U WHERE U.id_user= @P0)";
+
+            using(SqlConnection conn = new SqlConnection(connectionString)){
+                conn.Open();
+
+                using(SqlCommand cmd = new SqlCommand(query,conn)){
+
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.Add(new SqlParameter("P0",idUser));
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List<ArticleModel> listArticles = new List<ArticleModel>();
+
+                    while(reader.Read()){
+                        listArticles.Add(new ArticleModel{
+                            idArticle = Convert.ToInt32(reader["id_article"]),
+                            title = Convert.ToString(reader["article_title"]),
+                            content = Convert.ToString(reader["article_content"])
+                        });
+                    }
+
+                    return listArticles;  
                 }
             }
         }
