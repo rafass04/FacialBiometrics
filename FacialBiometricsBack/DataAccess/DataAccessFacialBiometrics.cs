@@ -106,9 +106,38 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
             }
         }
 
-        public bool Login(string userName, string password)
+        public UserInfo GenerateHashGenerateHash(string username)
         {
-            throw new NotImplementedException();
+            string query = "select * from UserInfo where username_user = @P0";
+
+            using(SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                using(SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.Add(new SqlParameter("P0", username));
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    var user = new UserInfo();
+
+                    user.UserPositionInfo = new UserPosition();
+
+                    if (reader.Read())
+                    {
+                        user.IdUser = Convert.ToInt32(reader["id_user"]);
+                        user.NameUser = Convert.ToString(reader["name_user"]);
+                        user.Username = Convert.ToString(reader["username_user"]);
+                        user.Password = Convert.ToString(reader["password_user"]);
+                        user.SaltPassword = Convert.ToString(reader["salt_password_user"]);
+                        user.UserPositionInfo.IdUserPosition = Convert.ToInt32(reader["id_user_position"]);
+                    }
+
+                    return user;
+                }
+            }
         }
     }
 }

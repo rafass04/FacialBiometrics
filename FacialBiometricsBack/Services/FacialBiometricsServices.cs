@@ -3,6 +3,8 @@ using FacialBiometricsBack.DataAccessFacialBiometrics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FacialBiometricsBack.Services
@@ -21,6 +23,9 @@ namespace FacialBiometricsBack.Services
             try
             {
                 if (userInfo == null) throw new ArgumentNullException(nameof(userInfo));
+
+                userInfo.SaltPassword = CreateSalt(25);
+                userInfo.Password = GenerateHash(userInfo.Password, userInfo.SaltPassword);
 
                 return _dataAccess.CreateUser(userInfo);
             }
@@ -75,7 +80,48 @@ namespace FacialBiometricsBack.Services
 
         public bool Login(string userName, string password)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(password)) 
+                    throw new ArgumentNullException("Username or password null");
+
+                var result = _dataAccess.GetUserByUsername(userName);
+
+                if (result == null)
+                if (result == null)
+                    return false;
+
+                if (result.Password != GenerateHash(password, result.SaltPassword))
+                    return false;
+
+                return true;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private string CreateSalt(int size)
+        {
+            var rng = new RNGCryptoServiceProvider();
+
+            var buff = new byte[size];
+
+            rng.GetBytes(buff);
+
+            return Convert.ToBase64String(buff);
+        }
+
+        private string GenerateHash(string password, string salt)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(password + salt);
+
+            SHA256Managed sha256 = new SHA256Managed();
+
+            byte[] hash = sha256.ComputeHash(bytes);
+
+            return Convert.ToBase64String(hash);
         }
     }
 }
