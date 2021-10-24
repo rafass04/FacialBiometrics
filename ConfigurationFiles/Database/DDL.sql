@@ -27,15 +27,6 @@ create table UsersFacialBiometrics(
 	foreign key(id_user) references UserInfo(id_user)
 )
 
-create table RuralPropertiesInfo(
-	id_property_info int identity(1,1) primary key,
-	property_text_info varchar(4096) not null,
-	property_img_info image not null,
-	id_user_position int,
-
-	foreign key(id_user_position) references UserPosition(id_user_position)
-)
-
 create table ArticleChemicalProduct(
 	id_article int identity(1,1) primary key,
 	article_title varchar(400) not null,
@@ -43,8 +34,6 @@ create table ArticleChemicalProduct(
 	id_user_position int,
 	foreign key(id_user_position) references UserPosition(id_user_position)
 )
-
-
 
 insert into UserPosition values ('N1');
 insert into UserPosition values ('N2');

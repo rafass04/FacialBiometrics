@@ -50,21 +50,6 @@ namespace FacialBiometricsBack.Services
             }
         }
 
-
-        public RuralPropertiesInfo GetRuralInfo(UserInfo userInfo)
-        {
-            try
-            {
-                if (userInfo == null) throw new ArgumentNullException(nameof(userInfo));
-
-                return _dataAccess.GetRuralInfo(userInfo);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
         public int GetUserPosition(UserInfo userInfo)
         {
             try

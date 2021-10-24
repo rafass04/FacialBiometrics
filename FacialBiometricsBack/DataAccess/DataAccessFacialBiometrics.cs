@@ -54,34 +54,6 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
             }
         }
 
-        public RuralPropertiesInfo GetRuralInfo(UserInfo userInfo)
-        {
-            string query = "select (property_text_info, property_img_info) from RuralPropertiesInfo where id_user_position <= @P0";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-
-                using(SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.Add(new SqlParameter("P0", userInfo.IdUser));
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    RuralPropertiesInfo rural = new RuralPropertiesInfo();
-
-                    if (reader.Read())
-                    {
-                        rural.TextInformation = Convert.ToString(reader["property_text_info"]);
-                        rural.ImageInformation = Encoding.ASCII.GetString((byte[])reader["property_img_info"]);
-                    }
-
-                    return rural;
-                }
-            }
-        }
-
         public int GetUserPosition(UserInfo userInfo)
         {
             string query = "select id_user_position from UserInfo where id_user = @P0";

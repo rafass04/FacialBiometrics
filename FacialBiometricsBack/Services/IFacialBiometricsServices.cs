@@ -17,8 +17,6 @@ namespace FacialBiometricsBack.Services
 
         UserInfo Login(string userName, string password);
 
-        RuralPropertiesInfo GetRuralInfo(UserInfo userInfo);
-
         List<ArticleModel> GetArticles(int idUser);
     }
 }
