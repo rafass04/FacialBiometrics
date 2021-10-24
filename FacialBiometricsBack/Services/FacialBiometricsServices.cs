@@ -87,7 +87,7 @@ namespace FacialBiometricsBack.Services
             }
         }
 
-        public bool Login(string userName, string password)
+        public UserInfo Login(string userName, string password)
         {
             try
             {
@@ -97,13 +97,12 @@ namespace FacialBiometricsBack.Services
                 var result = _dataAccess.GetUserByUsername(userName);
 
                 if (result == null)
-                if (result == null)
-                    return false;
+                    return null;
 
                 if (result.Password != GenerateHash(password, result.SaltPassword))
-                    return false;
+                    return null;
 
-                return true;
+                return result;
             }
             catch
             {

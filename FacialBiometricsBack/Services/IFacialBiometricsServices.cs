@@ -15,7 +15,7 @@ namespace FacialBiometricsBack.Services
 
         int GetUserPosition(UserInfo userInfo);
 
-        bool Login(string userName, string password);
+        UserInfo Login(string userName, string password);
 
         RuralPropertiesInfo GetRuralInfo(UserInfo userInfo);
 

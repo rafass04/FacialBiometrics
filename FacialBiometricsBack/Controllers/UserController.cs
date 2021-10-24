@@ -86,10 +86,19 @@ namespace FacialBiometricsBack.Controllers
 
         [HttpPost("validate")]
         public JsonResult validateLogin(LoginModel userCredentials){
-            Console.WriteLine($">validateLogin: username({userCredentials.username}), password({userCredentials.password}), qtd face_images({userCredentials.face_images.Count()})");
-            //Inserir validação das imagens enviadas do rosto
-            
-            return Json(new { isValid = true, levelAccess = 1});
+
+            var user = _facialBiometricsService.Login(userCredentials.username, userCredentials.password);
+
+            if (user == null)
+                return Json(new { isValid = false, message = "Invalid username or password", statusCode = HttpStatusCode.BadRequest });
+
+            //fazer validação da biometria
+            //...
+            //caso sucesso retorna
+            return Json(new { isValid = true, levelAccess = user.UserPositionInfo.IdUserPosition });
+
+            //caso a biometria falhe
+            return Json(new { isValid = false, message = "Invalid username or password", statusCode = HttpStatusCode.BadRequest });
         }
 
         [HttpGet("articles")]
