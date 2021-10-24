@@ -17,9 +17,6 @@ namespace FacialBiometricsBack.Models
         public string password { get; set; }
 
         [Required]
-        public string salt_password { get; set; }
-
-        [Required]
         public List<string> face_images { get; set; }
 
         [Required]

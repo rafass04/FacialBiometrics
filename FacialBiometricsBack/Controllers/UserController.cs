@@ -63,7 +63,6 @@ namespace FacialBiometricsBack.Controllers
                     NameUser = dadosUser.name,
                     Username = dadosUser.username,
                     Password = dadosUser.password,
-                    SaltPassword = dadosUser.salt_password,
                     UserPositionInfo = new UserPosition{ IdUserPosition = dadosUser.id_user_position}
                 });
 
@@ -99,7 +98,7 @@ namespace FacialBiometricsBack.Controllers
 
             //caso a biometria falhe
             return Json(new { isValid = false, message = "Invalid username or password", statusCode = HttpStatusCode.BadRequest });
-        }
+         }
 
         [HttpGet("articles")]
         public JsonResult getArticles(int idUser){
