@@ -1,4 +1,5 @@
-﻿using FacialBiometricsBack.Models;
+﻿using FacialBiometrics.Models;
+using FacialBiometricsBack.Models;
 using FacialBiometricsBack.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,7 @@ namespace FacialBiometricsBack.Controllers
             _facialBiometricsService = facialBiometricsServices;
         }
 
+        [HttpGet]
         public JsonResult GetTeste()
         {
             var dados = new
@@ -31,8 +33,8 @@ namespace FacialBiometricsBack.Controllers
             return Json(dados);
         }
 
-        [HttpPost("Cadastro")]
-        public JsonResult CadastroUser(UserFrontModel dadosUser )
+        [HttpPost("register")]
+        public JsonResult CadastroUser(UserFrontModel dadosUser)
         {
             if (ModelState.IsValid)
             {
@@ -57,8 +59,21 @@ namespace FacialBiometricsBack.Controllers
                 }
 
 
-                // método cadastrar banco (dadosUserm, imageDados)
-                //if ok return sucesso, else, message = "problema no cadastro"
+                int idUser = _facialBiometricsService.CreateUser(new UserInfo{
+                    NameUser = dadosUser.name,
+                    Username = dadosUser.username,
+                    Password = dadosUser.password,
+                    SaltPassword = dadosUser.salt_password,
+                    UserPositionInfo = new UserPosition{ IdUserPosition = dadosUser.id_user_position}
+                });
+
+                foreach(var faceImg in imageDados){
+                    _facialBiometricsService.CreateFacialBiometrics(new UsersFacialBiometrics{
+                        ImageName = Guid.NewGuid().ToString(),
+                        ImageBytes = faceImg.imageBytes,
+                        IdUser = idUser
+                    });
+                }
 
                 return Json(new { message = "Cadastrado com sucesso", statusCode = HttpStatusCode.OK });
             }
@@ -67,6 +82,26 @@ namespace FacialBiometricsBack.Controllers
                 return Json(new { message = "Cadastro Inválido", statusCode = HttpStatusCode.BadRequest });
             }
 
+        }
+
+        [HttpPost("validate")]
+        public JsonResult validateLogin(LoginModel userCredentials){
+            Console.WriteLine($">validateLogin: username({userCredentials.username}), password({userCredentials.password}), qtd face_images({userCredentials.face_images.Count()})");
+            //Inserir validação das imagens enviadas do rosto
+            
+            return Json(new { isValid = true, levelAccess = 1});
+        }
+
+        [HttpGet("articles")]
+        public JsonResult getArticles(int idUser){
+            //SELECT * FROM ARTIGOS A WHERE A.NIVEL_ACESSO IN (SELECT U.LEVEL FROM USUARIO U WHERE U.ID = ID_USER)
+            //Fazer query no banco que busca os artigos liberados pro nível do idUser passado
+
+            Console.WriteLine(">getArticles: idUser("+idUser+")");
+            
+            List<ArticleModel> list_articles = _facialBiometricsService.GetArticles(idUser);
+
+            return Json(new { listArticles = list_articles });
         }
 
     }

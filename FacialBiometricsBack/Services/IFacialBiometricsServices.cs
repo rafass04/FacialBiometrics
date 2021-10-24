@@ -1,4 +1,5 @@
 ﻿using FacialBiometrics.Models;
+using FacialBiometricsBack.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace FacialBiometricsBack.Services
         bool Login(string userName, string password);
 
         RuralPropertiesInfo GetRuralInfo(UserInfo userInfo);
+
+        List<ArticleModel> GetArticles(int idUser);
     }
 }
