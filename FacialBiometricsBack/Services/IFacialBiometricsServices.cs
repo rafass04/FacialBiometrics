@@ -18,5 +18,6 @@ namespace FacialBiometricsBack.Services
         UserInfo Login(string userName, string password);
 
         List<ArticleModel> GetArticles(int idUser);
+        List<string> GetUsersByLevel(int idPosition);
     }
 }

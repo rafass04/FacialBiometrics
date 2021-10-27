@@ -15,5 +15,6 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
         UserInfo GetUserByUsername(string username);
 
         List<ArticleModel> GetArticles(int idUser);
+        List<string> GetUserByLevel(int idPosition);
     }
 }

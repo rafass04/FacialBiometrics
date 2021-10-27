@@ -84,8 +84,10 @@ namespace FacialBiometricsBack.Services
                 if (result == null)
                     return null;
 
-                if (result.Password != GenerateHash(password, result.SaltPassword))
+                if (result.Password != password)
                     return null;
+               /* if (result.Password != GenerateHash(password, result.SaltPassword))
+                    return null;*/
 
                 return result;
             }
@@ -115,6 +117,12 @@ namespace FacialBiometricsBack.Services
             byte[] hash = sha256.ComputeHash(bytes);
 
             return Convert.ToBase64String(hash);
+        }
+
+        public List<string> GetUsersByLevel(int idPosition)
+        {
+
+            return _dataAccess.GetUserByLevel(idPosition);
         }
     }
 }

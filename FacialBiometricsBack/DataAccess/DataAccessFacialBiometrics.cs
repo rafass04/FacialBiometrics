@@ -61,7 +61,7 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-
+               
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.CommandType = CommandType.Text;
@@ -84,7 +84,7 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
         public List<ArticleModel> GetArticles(int idUser){
             string query = @"
                 SELECT * FROM ArticleChemicalProduct A 
-                    where A.id_user_position = (select U.id_user_position FROM UserInfo U WHERE U.id_user= @P0)";
+                    where A.id_user_position <= (select U.id_user_position FROM UserInfo U WHERE U.id_user= @P0)";
 
             using(SqlConnection conn = new SqlConnection(connectionString)){
                 conn.Open();
@@ -141,6 +141,35 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
                     }
 
                     return user;
+                }
+            }
+        }
+
+        public List<string> GetUserByLevel(int idPosition)
+        {
+            string query = @"
+                SELECT name_user FROM UserInfo where id_user_position = @P0";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.Add(new SqlParameter("P0", idPosition));
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List<string> listUsers = new List<string>();
+
+                    while (reader.Read())
+                    {
+                        listUsers.Add(Convert.ToString(reader["name_user"]));                        
+                    }
+
+                    return listUsers;
                 }
             }
         }

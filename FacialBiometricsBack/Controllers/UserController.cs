@@ -22,17 +22,6 @@ namespace FacialBiometricsBack.Controllers
             _facialBiometricsService = facialBiometricsServices;
         }
 
-        [HttpGet]
-        public JsonResult GetTeste()
-        {
-            var dados = new
-            {
-                message = "Teste de api"
-            };            
-
-            return Json(dados);
-        }
-
         [HttpPost("register")]
         public JsonResult CadastroUser(UserFrontModel dadosUser)
         {
@@ -110,6 +99,18 @@ namespace FacialBiometricsBack.Controllers
             List<ArticleModel> list_articles = _facialBiometricsService.GetArticles(idUser);
 
             return Json(new { listArticles = list_articles });
+        }
+
+        [HttpGet("levels")]
+        public JsonResult getUserByLevel (int idPosition)
+        {
+            if (idPosition == 0)
+                return Json(new {message = "Nível não especificado." });
+
+            List<string> list_users = _facialBiometricsService.GetUsersByLevel(idPosition);
+
+
+            return Json(new { message ="Sucesso!", list_users = list_users });
         }
 
     }
