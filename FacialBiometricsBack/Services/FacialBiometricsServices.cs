@@ -16,6 +16,7 @@ namespace FacialBiometricsBack.Services
 
         public FacialBiometricsServices(IDataAccessFacialBiometrics dataAccess)
         {
+            //Instanciar classe do EmguCV
             _dataAccess = dataAccess;
         }
 
@@ -123,6 +124,12 @@ namespace FacialBiometricsBack.Services
         {
 
             return _dataAccess.GetUserByLevel(idPosition);
+        }
+
+        //Criar método para receber imagens a serem comparadas()
+        public bool CompareImages()
+        {
+            return true;
         }
     }
 }
