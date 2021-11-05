@@ -19,5 +19,8 @@ namespace FacialBiometricsBack.Services
 
         List<ArticleModel> GetArticles(int idUser);
         List<string> GetUsersByLevel(int idPosition);
+
+        public bool CompareImages(int idUser,List<byte[]> imagensRecebidas);
+        
     }
 }

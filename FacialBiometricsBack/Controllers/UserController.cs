@@ -80,13 +80,26 @@ namespace FacialBiometricsBack.Controllers
             if (user == null)
                 return Json(new { isValid = false, message = "Invalid username or password", statusCode = HttpStatusCode.BadRequest });
 
-            //fazer validação da biometria
-            //...
-            //caso sucesso retorna
-            return Json(new { isValid = true, levelAccess = user.UserPositionInfo.IdUserPosition });
+            List<byte[]> imageDados = new List<byte[]>();
 
-            //caso a biometria falhe
-            return Json(new { isValid = false, message = "Invalid username or password", statusCode = HttpStatusCode.BadRequest });
+            //converte as imagens recebidas em 64 para bytes
+            foreach (var img64 in userCredentials.face_images)
+            {
+                string[] imgDados = img64.Split(',');
+                imageDados.Add(Convert.FromBase64String(imgDados[1]));
+            }
+
+            //fazer validação da biometria
+            bool resultFaceImgs = _facialBiometricsService.CompareImages(user.IdUser,imageDados);
+            if (resultFaceImgs)
+            {
+                return Json(new { isValid = true, levelAccess = user.UserPositionInfo.IdUserPosition });
+            }
+            else
+            {
+                return Json(new { isValid = false, message = "Invalid Biometric data", statusCode = HttpStatusCode.BadRequest });
+            }            
+
          }
 
         [HttpGet("articles")]

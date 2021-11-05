@@ -173,5 +173,33 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
                 }
             }
         }
+
+        public List<byte[]> GetFacialBiometric(int idUser)
+        {
+            string query = @"select fb.user_img from UsersFacialBiometrics fb where fb.id_user = @P0";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                using(SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.Add(new SqlParameter("P0", idUser));
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List<byte[]> imgs = new List<byte[]>();
+
+                    while (reader.Read())
+                    {
+                        imgs.Add((byte[])reader["img_user"]);
+                    }
+
+                    return imgs;
+                }
+
+            }
+        }
     }
 }
