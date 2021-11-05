@@ -1,4 +1,5 @@
 --Query com os inserts nas tabelas
+use RuralPropertiesInformations;
 insert into UserPosition values ('N1');
 insert into UserPosition values ('N2');
 insert into UserPosition values ('N3');
@@ -14,12 +15,12 @@ insert into ArticleChemicalProduct values
 ('Título art.2 nível 2','Conteúdo art.2 nível 3',3),
 ('Título art.3 nível 2','Conteúdo art.3 nível 3',3);
 go
-INSERT INTO [dbo].[UserInfo]
-           ([name_user]
-           ,[username_user]
-           ,[password_user]
-           ,[salt_password_user]
-           ,[id_user_position])
+INSERT INTO UserInfo
+           (name_user
+           ,username_user
+           ,password_user
+           ,salt_password_user
+           ,id_user_position)
      VALUES
            ('Caique Fernando de Souza','fernando.c','nando123','caique123',1)
 		  ,('Jamal Rato de Lima', 'jamal.r', 'jamal13','rash123',2)
@@ -30,5 +31,5 @@ INSERT INTO [dbo].[UserInfo]
 		  ,('Olivia Marques Marinho','marques.o','mar123','olimar123',2)
 		  ,('Sol Mazzaro dos Santos','santos.s', 'mazzaro123','solRash',1)
 		  ,('Katniss Snow Bastos','bastos.k', 'snow123','kat123',2)
-		  ,('Priss Natan Melo','melo.p','natan123','melo123',3)
+		  ,('Priss Natan Melo','melo.p','natan123','melo123',3);
 		  

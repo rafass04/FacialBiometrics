@@ -91,8 +91,6 @@ namespace FacialBiometricsBack.Controllers
 
         [HttpGet("articles")]
         public JsonResult getArticles(int idUser){
-            //SELECT * FROM ARTIGOS A WHERE A.NIVEL_ACESSO IN (SELECT U.LEVEL FROM USUARIO U WHERE U.ID = ID_USER)
-            //Fazer query no banco que busca os artigos liberados pro nível do idUser passado
 
             Console.WriteLine(">getArticles: idUser("+idUser+")");
             
