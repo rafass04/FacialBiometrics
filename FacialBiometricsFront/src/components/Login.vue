@@ -13,32 +13,36 @@
                                 </div>
 
                                 <form @submit.prevent.stop="auth">
-                                    <div class="form-group first">
+                                    <div class="form-group first" id="form-username">
                                         <label for="username"> Username: </label>
 
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text">
+                                                <div class="input-group-text" id="div-icon-username">
                                                     <b-icon icon="person-fill"></b-icon>
                                                 </div>
                                             </div>
 
                                             <input v-model="userInfo.username_user" type="text" class="form-control" id="username" placeholder="Username" />
                                         </div>
+
+                                       <!--  <small class="text-danger field-required"> Field required </small> -->
                                     </div>
 
-                                    <div class="form-group last mb-4">
+                                    <div class="form-group last mb-4" id="form-password">
                                         <label for="password"> Password: </label>
 
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text">
+                                                <div class="input-group-text" id="div-icon-password">
                                                     <b-icon icon="lock-fill"></b-icon>
                                                 </div>
                                             </div>
 
                                             <input v-model="userInfo.password_user" type="password" class="form-control" id="password" placeholder="Password" />
                                         </div>
+
+                                        <!-- <small class="text-danger"> Field required </small> -->
                                     </div>
 
                                     <p v-show="errorMessage" class="container alert alert-danger text-center mt-3"> 
@@ -109,30 +113,62 @@
 
         methods: {
             auth() {
-                // this.$router.push({name: 'funcionarios'});
+                if(this.validateFields()) {
+                    this.$store.dispatch('authentication', this.userInfo)
+                        .then((response) => {
+                            if(response.token) {
+                                this.$router.push({name: 'biometrics'});
+                            }
+                        })
+                        .catch((exception) => {
+                            if(exception.request.status === 401) {
+                                this.errorMessage = 'Username or password is invalid';
+                            }
+                        });
+                } else {
+                    this.injectErrorIntoFields();
+                }
+            },
 
-                let usuario = {
-                    nome: this.userInfo.username_user,
-                    senha: this.userInfo.password_user
-                };
+            validateFields() {
+                if(this.userInfo.username_user != '' && this.userInfo.password_user != '') {
+                    return true;
+                }
 
-                this.$store.dispatch('authentication', usuario)
-                    .then((response) => {
-                        if(response.token) {
-                            this.$router.push({name: 'biometrics'});
-                        }
-                    })
-                    .catch((exception) => {
-                        if(exception.request.status === 401) {
-                            this.errorMessage = 'Username or password is invalid';
-                        }
-                    });
+                return false;
+            },
+
+            injectErrorIntoFields() {
+                let iconUsername = document.querySelector('#div-icon-username');
+                let iconPassword = document.querySelector('#div-icon-password');
+                let inputUsername = document.querySelector('#username');
+                let inputPassword = document.querySelector('#password');
+
+                iconUsername.classList.add('error-field');
+                iconPassword.classList.add('error-field');
+                inputUsername.classList.add('error-field');
+                inputPassword.classList.add('error-field');
+
+                let divFormUsername = document.querySelector('#form-username');
+                let divFormPassword = document.querySelector('#form-password');
+
+                let fieldRequiredMessage = document.createElement('small');
+
+                fieldRequiredMessage.textContent = 'Field required';
+                fieldRequiredMessage.classList.add('text-danger');
+
+                divFormUsername.append(fieldRequiredMessage);
+                divFormPassword.append(fieldRequiredMessage);
             }
         }
     }
 </script>
 
 <style scoped>
+    .error-field {
+        border-color: red !important;
+    }
+
     .opacity {
         opacity: 0.7;
     }

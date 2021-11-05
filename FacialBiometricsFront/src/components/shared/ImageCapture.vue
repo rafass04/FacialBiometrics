@@ -9,10 +9,6 @@
                     @error="getError"
                 ></WebCam>
             </div>
-            
-            <div class="col-lg-2 col-md-12 col-sm-12">
-                <img id="captured-image" class="border border-dark" width="140" height="170" hidden />
-            </div>
         </div>
 
         <div class="mt-2">
@@ -23,7 +19,7 @@
             <input type="checkbox" class="ml-4" id="checkbox-image-3" name="photo-3" /> Photo 3
         </div>
 
-        <div class="mt-5">
+        <div class="mt-4 mb-5">
             <b-button variant="dark" @click="capturePhoto"> 
                 Capture
             </b-button>
@@ -53,14 +49,6 @@
                 capture
                     .then((base64) => {
                         this.captures.push(base64);
-
-                        console.log(base64);
-
-                        let image = document.querySelector('#captured-image');
-
-                        image.hidden = false;
-
-                        image.src = base64;
 
                         let checkbox = document.querySelector(`#checkbox-image-${this.i}`);
 
