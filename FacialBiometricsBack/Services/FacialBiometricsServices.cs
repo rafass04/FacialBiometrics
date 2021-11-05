@@ -86,8 +86,8 @@ namespace FacialBiometricsBack.Services
 
                 if (result.Password != password)
                     return null;
-               /* if (result.Password != GenerateHash(password, result.SaltPassword))
-                    return null;*/
+                if (result.Password != GenerateHash(password, result.SaltPassword))
+                    return null;
 
                 return result;
             }

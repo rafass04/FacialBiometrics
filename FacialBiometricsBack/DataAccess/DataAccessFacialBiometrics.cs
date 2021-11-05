@@ -87,7 +87,7 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
                     where A.id_user_position <= (select U.id_user_position FROM UserInfo U WHERE U.id_user= @P0)";
 
             using(SqlConnection conn = new SqlConnection(connectionString)){
-                conn.Open();
+                conn.Open();              
 
                 using(SqlCommand cmd = new SqlCommand(query,conn)){
 
