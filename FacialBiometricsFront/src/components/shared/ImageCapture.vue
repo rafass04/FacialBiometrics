@@ -1,0 +1,95 @@
+<template>
+    <div>
+        <div class="row">
+            <div>
+                <WebCam
+                    class="justify-content-center ml-3"
+                    ref="webcam"
+                    :height="300"
+                    @error="getError"
+                ></WebCam>
+            </div>
+            
+            <div class="col-lg-2 col-md-12 col-sm-12">
+                <img id="captured-image" class="border border-dark" width="140" height="170" hidden />
+            </div>
+        </div>
+
+        <div class="mt-2">
+            <input type="checkbox" class="ml-4" id="checkbox-image-1" name="photo-1" /> Photo 1
+
+            <input type="checkbox" class="ml-4" id="checkbox-image-2" name="photo-2" /> Photo 2
+
+            <input type="checkbox" class="ml-4" id="checkbox-image-3" name="photo-3" /> Photo 3
+        </div>
+
+        <div class="mt-5">
+            <b-button variant="dark" @click="capturePhoto"> 
+                Capture
+            </b-button>
+        </div>
+    </div>
+</template>
+
+<script>
+    import {WebCam} from 'vue-cam-vision';
+
+    export default {
+        components: {
+            WebCam
+        },
+
+        data() {
+            return {
+                captures: [],
+                i: 1
+            }
+        },
+
+        methods: {
+            capturePhoto() {
+                let capture = this.$refs.webcam.capture();
+
+                capture
+                    .then((base64) => {
+                        this.captures.push(base64);
+
+                        console.log(base64);
+
+                        let image = document.querySelector('#captured-image');
+
+                        image.hidden = false;
+
+                        image.src = base64;
+
+                        let checkbox = document.querySelector(`#checkbox-image-${this.i}`);
+
+                        checkbox.checked = true;
+
+                        this.i++;
+
+                        if(this.i == 4) {
+                            this.$emit('photos-list', this.captures);
+                        }
+                    })
+                    .catch((exception) => {
+                        alert('There was an error when taking the photo. Try again');
+
+                        console.log(`Error -> ${exception}`);
+                    })
+            },
+
+            getError(error) {
+                alert('An error has occurred!!! \nCheck that you have connected to your camera');
+
+                console.log(error);
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    #captured-image {
+        object-fit: cover; /* Redimensiona a imagem para caber na div */
+    }
+</style>
