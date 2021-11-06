@@ -24,7 +24,7 @@ const routes = [
         component: Information,
         name: 'information',
         meta: {
-            public: true
+            public: false
         }
     },
     {

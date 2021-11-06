@@ -20,7 +20,7 @@
 		},
 
 		metaInfo: {
-      		title: 'Facial',
+      		title: 'Meio Ambiente',
 
       		htmlAttrs: {
         		lang: 'pt-BR'
@@ -33,7 +33,7 @@
 			],
 
 			link: [
-				{rel: 'icon', href: require('./assets/vue-icon.png')}
+				{rel: 'icon', href: require('./assets/icon-meio-ambiente.png')}
 			]
     	},
 

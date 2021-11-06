@@ -22,7 +22,7 @@
 
 						<hr/> <br/>
 						
-						<fieldset>
+						<fieldset class="tab">
 							<div class="form-card">
 								<div class="row">
 									<div class="col-7">
@@ -39,22 +39,24 @@
 								<label class="fieldlabels">Password: *</label> 
 								<input type="password" v-model="userInfo.password_user" name="password" placeholder="Password" /> 
 								
-								<label class="fieldlabels"> Position:* </label>
-								<select v-model="userInfo.id_user_position" class="form-control" name="Setor">
+								<label class="fieldlabels"> Position:* </label> <br/>
+								<select v-model="userInfo.id_user_position" class="mt-2" name="Setor">
 									<option value="1"> Minister </option>						
 									<option value="2"> Manager </option>
 									<option value="3"> Official </option>
 								</select>
 							</div>
 
-							<input type="button" name="next" class="next action-button mt-4" value="Next" />
+							<button type="button" @click="nextPrev(1)" name="next" class="next action-button mt-4"> 
+								Next
+							</button>
 						
-							<b-button :to="{name: 'login'}" type="button" name="previous" class="button-login  mt-4 mr-3">
-								Back to Login
+							<b-button :to="{name: 'login'}" type="button" name="previous" class="button-login mt-4 mr-3">
+								Login
 							</b-button>
 						</fieldset>
 
-						<fieldset>
+						<fieldset class="tab">
 							<div class="form-card">
 								<div class="row">
 									<div class="col-7">
@@ -71,16 +73,20 @@
 								<ImageCapture @photos-list="getPhotos" />
 							</div>
 
-							<input type="button" @click="submit" name="next" class="next action-button" value="Submit" /> 
+							<button type="button" @click="send(), nextPrev(1)" name="next" class="next action-button">
+								Submit
+							</button>
 							
-							<input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+							<button type="button" @click="nextPrev(-1)" name="previous" class="previous action-button-previous">
+								Previous
+							</button>
 						
 							<b-button :to="{name: 'login'}" type="button" name="previous" variant="primary" class="button-login mr-3">
-								Back to Login
+								Login
 							</b-button>
 						</fieldset>
 
-						<fieldset>
+						<fieldset class="tab">
 							<div class="form-card">
 								<div class="row">
 									<div class="col-7">
@@ -121,16 +127,14 @@
 
 <script>
 	import ImageCapture from './shared/ImageCapture.vue';
-	import next from '../js/registration';
 
     export default {
   		components: { 
-			ImageCapture,
-			
+			ImageCapture
 		},
 
 		mounted() {
-			next;
+			this.showTab(this.currentTab);
 		},
 
 		data() {
@@ -142,17 +146,58 @@
 					password_user: '',
 					id_user_position: 1,
 					images: []
-				}
+				},
+
+				currentTab: 0
 			}
 		},
 
 		methods: {
-			submit() {
-				console.log(this.userInfo);
+			send() {
+				console.log(JSON.stringify(this.userInfo));
+
+				setTimeout(() => {
+					this.$router.push({name: 'login'});
+				}, 3000);
 			},
 
 			getPhotos(photos) {
 				this.userInfo.images = photos;
+			},
+
+			showTab(numberPage) {
+				var fieldsSet = document.getElementsByClassName("tab");
+
+				fieldsSet[numberPage].style.display = "block";
+			},
+
+			nextPrev(numberPage) {
+				let fieldsSet = document.getElementsByClassName("tab");
+
+				let iconAccount = document.querySelector('#account');
+				let iconCamera = document.querySelector('#camera');
+
+				if(numberPage == 1) {
+					// Estou na camera
+					iconAccount.classList.remove('active');
+
+					iconCamera.classList.add('active');
+				} else {
+					// Estou no cadastro
+					iconCamera.classList.remove('active');
+
+					iconAccount.classList.add('active');
+				}
+
+				fieldsSet[this.currentTab].style.display = "none";
+				
+				this.currentTab += numberPage;
+
+				if(this.currentTab >= fieldsSet.length) {
+					return false;
+				}
+				
+				this.showTab(this.currentTab);
 			}
 		},
 
@@ -188,7 +233,6 @@
 		padding: 10px 5px;
 		margin: 10px 5px 10px 0px;
 		float: right;
-		font-size: 14px;
 		background: #428bca;
 	}
 
@@ -236,7 +280,7 @@
 		display: none
 	}
 
-	#msform input, #msform textarea {
+	#msform input, select #msform textarea {
 		padding: 8px 15px 8px 15px;
 		border: 1px solid #ccc;
 		border-radius: 0px;
@@ -251,12 +295,32 @@
 		letter-spacing: 1px
 	}
 
-	#msform input:focus, #msform textarea:focus {
+	#msform input:focus, select:focus #msform textarea:focus {
 		-moz-box-shadow: none !important;
 		-webkit-box-shadow: none !important;
 		box-shadow: none !important;
 		border: 1px solid #673AB7;
 		outline-width: 0
+	}
+
+	/* Repetindo o código, pois, não funciona se como select:focus nos acima */
+	#msform select:focus {
+		border: 1px solid #673AB7;
+	}
+
+	#msform select {
+		padding: 8px 15px 8px 15px;
+		border: 1px solid #ccc;
+		border-radius: 0px;
+		margin-bottom: 25px;
+		margin-top: 2px;
+		width: 100%;
+		box-sizing: border-box;
+		font-family: montserrat;
+		color: #2C3E50;
+		background-color: #ECEFF1;
+		font-size: 16px;
+		letter-spacing: 1px
 	}
 
 	#msform .action-button {
@@ -346,6 +410,6 @@
 
 	.fit-image {
 		width: 100%;
-		object-fit: cover
+		object-fit: cover;
 	}
 </style>
