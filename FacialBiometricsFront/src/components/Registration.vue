@@ -34,7 +34,10 @@
 								</div> 
 								
 								<label class="fieldlabels">Name: *</label>
-								<input type="text" v-model="userInfo.name_user" name="name" placeholder="Name" /> 
+								<input type="text" v-model="userInfo.name_user" name="name" placeholder="Name" />
+
+								<label class="fieldlabels">Username: *</label>
+								<input type="text" v-model="userInfo.username_user" name="username" placeholder="Username" /> 
 								
 								<label class="fieldlabels">Password: *</label> 
 								<input type="password" v-model="userInfo.password_user" name="password" placeholder="Password" /> 
@@ -73,14 +76,14 @@
 								<ImageCapture @photos-list="getPhotos" />
 							</div>
 
-							<button type="button" @click="send(), nextPrev(1)" name="next" class="next action-button">
+							<button :disabled="!hasThreeImages" type="button" @click="send(), nextPrev(1)" name="next" class="next action-button">
 								Submit
 							</button>
-							
+
 							<button type="button" @click="nextPrev(-1)" name="previous" class="previous action-button-previous">
 								Previous
 							</button>
-						
+
 							<b-button :to="{name: 'login'}" type="button" name="previous" variant="primary" class="button-login mr-3">
 								Login
 							</b-button>
@@ -95,23 +98,21 @@
 									<div class="col-5">
 										<h2 class="steps">Step 3 - 3</h2>
 									</div>
-								</div> <br><br>
+								</div> <br/> <br/>
 
-								<h2 class="purple-text text-center">
-									<strong>SUCCESS ! </strong>
+								<h2 class="green-text text-center">
+									<strong> SUCCESS ! </strong>
 								</h2> <br/>
 								
 								<div class="row justify-content-center">
 									<div class="col-3"> 
-										<img src="https://i.imgur.com/GwStPmg.png" class="fit-image" /> 
+										<img src="https://www.pinclipart.com/picdir/big/546-5469594_green-checklist-png-small-green-check-icon-clipart.png" class="fit-image" /> 
 									</div>
-								</div> 
-								
-								<br/> <br/>
+								</div> <br/> <br/>
 
 								<div class="row justify-content-center">
 									<div class="col-7 text-center">
-										<h5 class="purple-text text-center">
+										<h5 class="green-text text-center">
 											You Have Successfully Signed Up
 										</h5>
 									</div>
@@ -129,12 +130,8 @@
 	import ImageCapture from './shared/ImageCapture.vue';
 
     export default {
-  		components: { 
+  		components: {
 			ImageCapture
-		},
-
-		mounted() {
-			this.showTab(this.currentTab);
 		},
 
 		data() {
@@ -178,12 +175,12 @@
 				let iconCamera = document.querySelector('#camera');
 
 				if(numberPage == 1) {
-					// Estou na camera
+					// Camera
 					iconAccount.classList.remove('active');
 
 					iconCamera.classList.add('active');
 				} else {
-					// Estou no cadastro
+					// Account
 					iconCamera.classList.remove('active');
 
 					iconAccount.classList.add('active');
@@ -201,19 +198,15 @@
 			}
 		},
 
+		mounted() {
+			this.showTab(this.currentTab);
+		},
+
 		computed: {
-			canReleaseCamera() {
-				if(this.userInfo.name_user != '' && this.userInfo.password_user != '') {
-					return true;
-				}
-
-				return false;
-			},
-
 			hasThreeImages() {
 				return this.userInfo.images.length == 3;
 			}
-		},
+		}
     }
 </script>
 
@@ -236,6 +229,14 @@
 		background: #428bca;
 	}
 
+	.button-login:hover {
+		background: #151B54;
+	}
+
+	.btn-submit-disabled {
+		background: #98FB98;
+	}
+
 	#sign-up {
 		border: 0.5px solid lightgray !important;
 		border-radius: 10px !important;
@@ -251,8 +252,12 @@
 
 	#heading {
 		text-transform: uppercase;
-		color: #673AB7;
+		color: #57bb57;
 		font-weight: normal
+	}
+
+	.btn-next-disabled {
+		background: #98FB98;
 	}
 
 	#msform {
@@ -295,17 +300,17 @@
 		letter-spacing: 1px
 	}
 
-	#msform input:focus, select:focus #msform textarea:focus {
+	#msform input:focus, #msform textarea:focus {
 		-moz-box-shadow: none !important;
 		-webkit-box-shadow: none !important;
 		box-shadow: none !important;
-		border: 1px solid #673AB7;
+		border: 1px solid #40826D;
 		outline-width: 0
 	}
 
 	/* Repetindo o código, pois, não funciona se como select:focus nos acima */
 	#msform select:focus {
-		border: 1px solid #673AB7;
+		border: 1px solid #40826D;
 	}
 
 	#msform select {
@@ -325,7 +330,7 @@
 
 	#msform .action-button {
 		width: 100px;
-		background: #673AB7;
+		background: #088F8F;
 		font-weight: bold;
 		color: white;
 		border: 0 none;
@@ -337,7 +342,7 @@
 	}
 
 	#msform .action-button:hover, #msform .action-button:focus {
-		background-color: #311B92
+		background-color: #023020;
 	}
 
 	#msform .action-button-previous {
@@ -365,14 +370,14 @@
 
 	.fs-title {
 		font-size: 25px;
-		color: #673AB7;
+		color: #2E8B57;
 		margin-bottom: 15px;
 		font-weight: normal;
 		text-align: left
 	}
 
-	.purple-text {
-		color: #673AB7;
+	.green-text {
+		color: #04AA6D;
 		font-weight: normal
 	}
 
@@ -396,7 +401,7 @@
 	}
 
 	#progressbar .active {
-		color: #673AB7
+		color: #088F8F;
 	}
 
 	#progressbar li {

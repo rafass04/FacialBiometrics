@@ -20,7 +20,7 @@
         </div>
 
         <div class="mt-4 mb-5">
-            <b-button variant="dark" @click="capturePhoto"> 
+            <b-button :disabled="hasThreeImages" @click="capturePhoto" variant="dark"> 
                 Capture
             </b-button>
         </div>
@@ -72,7 +72,13 @@
 
                 console.log(error);
             }
-        }
+        },
+
+        computed: {
+			hasThreeImages() {
+				return this.captures.length == 3;
+			}
+		}
     }
 </script>
 

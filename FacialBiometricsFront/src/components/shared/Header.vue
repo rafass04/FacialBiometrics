@@ -36,8 +36,7 @@
 
         data() {
             return {
-                nome: this.$store.state.usuario.nome,
-                test: 'User'
+                nome: this.$store.state.usuario.nome
             }
         },
 
