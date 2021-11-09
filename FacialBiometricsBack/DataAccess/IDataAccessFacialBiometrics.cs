@@ -16,6 +16,6 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
 
         List<ArticleModel> GetArticles(int idUser);
         List<string> GetUserByLevel(int idPosition);
-        public List<byte[]> GetFacialBiometric(int idUser);
+        public List<UsersFacialBiometrics> GetFacialBiometric(int idUser);
     }
 }

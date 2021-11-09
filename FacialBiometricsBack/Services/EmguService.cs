@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Emgu.CV;
 using Emgu.CV.Face;
 using Emgu.CV.Structure;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Util;
+using FacialBiometrics.Models;
 
 namespace FacialBiometricsBack.Services
 {
@@ -13,13 +17,38 @@ namespace FacialBiometricsBack.Services
     {
 
 
-        public bool CompareImages(List<byte[]> imgsDb, List<byte[]> imgsRecebidas)
+        public bool CompareImages(List<UsersFacialBiometrics> imgsDb, List<byte[]> imgsRecebidas)
         {
-            Image<Gray, Byte>[] imgsTraining = new Image<Gray, byte>[3];
+            Image<Gray, Byte>[] imgsTraining = new Image<Gray, byte>[4];
 
-            for(int i = 0; i < imgsTraining.Length; i++)
+            List<string> pathImgs = new List<string>();
+            try
             {
-                imgsTraining[i] = new Image<Gray, Byte>(Encoding.ASCII.GetString(imgsDb[i]));
+                string caminho = @"./Uploads/";
+                DirectoryInfo dir = Directory.CreateDirectory(caminho);
+
+
+                foreach (var img in imgsDb)
+                {
+                    string path = caminho + img.IdUser + img.IdImg + ".jpeg";
+                    pathImgs.Add(path);
+
+                    using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+                    {
+                        fs.Write(img.ImageBytes, 0, img.ImageBytes.Length);
+                    }
+
+                }
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Erro: " + e.Message);
+            }
+
+            for (int i = 0; i < imgsTraining.Length; i++)
+            {
+                imgsTraining[i] = new Image<Gray, Byte>(pathImgs[i]);
             }
 
             int[] labels = new int[] { 0, 1, 2 };

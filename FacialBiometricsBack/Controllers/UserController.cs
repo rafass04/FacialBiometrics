@@ -78,7 +78,7 @@ namespace FacialBiometricsBack.Controllers
             var user = _facialBiometricsService.Login(userCredentials.username, userCredentials.password);
 
             if (user == null)
-                return Json(new { isValid = false, message = "Invalid username or password", statusCode = HttpStatusCode.BadRequest });
+                return Json(new { isValid = false, message = "User Empty - Invalid username or password", statusCode = HttpStatusCode.BadRequest });
 
             List<byte[]> imageDados = new List<byte[]>();
 

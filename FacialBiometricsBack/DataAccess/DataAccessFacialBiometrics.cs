@@ -27,7 +27,7 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
                     cmd.Parameters.Add(new SqlParameter("P0", userInfo.NameUser));
                     cmd.Parameters.Add(new SqlParameter("P1", userInfo.Username));
                     cmd.Parameters.Add(new SqlParameter("P2", userInfo.Password));
-                    cmd.Parameters.Add(new SqlParameter("P3", userInfo.SaltPassword));
+                    cmd.Parameters.Add(new SqlParameter("P3", userInfo.Password));
                     cmd.Parameters.Add(new SqlParameter("P4", userInfo.UserPositionInfo.IdUserPosition));
 
                     return Convert.ToInt32(cmd.ExecuteScalar());
@@ -174,26 +174,33 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
             }
         }
 
-        public List<byte[]> GetFacialBiometric(int idUser)
+        public List<UsersFacialBiometrics> GetFacialBiometric(int idUser)
         {
-            string query = @"select fb.user_img from UsersFacialBiometrics fb where fb.id_user = @P0";
+            string query = @"select * from UsersFacialBiometrics fb where fb.id_user = @P0";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                using(SqlCommand cmd = new SqlCommand())
+                using(SqlCommand cmd = new SqlCommand(query,conn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.Add(new SqlParameter("P0", idUser));
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    List<byte[]> imgs = new List<byte[]>();
+                    List<UsersFacialBiometrics> imgs = new List<UsersFacialBiometrics>();
 
                     while (reader.Read())
                     {
-                        imgs.Add((byte[])reader["img_user"]);
+                        //(byte[])reader["user_img"]
+                        imgs.Add(new UsersFacialBiometrics
+                        {
+                            IdImg = Convert.ToInt32(reader["id_img"]),
+                            ImageName = Convert.ToString(reader["name_img"]),
+                            ImageBytes = (Byte[])reader["user_img"] ,
+                            IdUser = Convert.ToInt32(reader["id_user"])
+                        });
                     }
 
                     return imgs;

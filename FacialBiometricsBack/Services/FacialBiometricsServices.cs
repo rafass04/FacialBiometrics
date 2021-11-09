@@ -26,8 +26,8 @@ namespace FacialBiometricsBack.Services
             {
                 if (userInfo == null) throw new ArgumentNullException(nameof(userInfo));
 
-                userInfo.SaltPassword = CreateSalt(25);
-                userInfo.Password = GenerateHash(userInfo.Password, userInfo.SaltPassword);
+                //userInfo.SaltPassword = CreateSalt(25);
+                //userInfo.Password = GenerateHash(userInfo.Password, userInfo.SaltPassword);
 
                 return _dataAccess.CreateUser(userInfo);
             }
@@ -129,7 +129,7 @@ namespace FacialBiometricsBack.Services
         //Criar método para receber imagens a serem comparadas()
         public bool CompareImages(int idUser, List<byte[]> imagensRecebidas)
         {
-            List<byte[]> imgsDb = _dataAccess.GetFacialBiometric(idUser);
+            List<UsersFacialBiometrics> imgsDb = _dataAccess.GetFacialBiometric(idUser);
 
             //> Monta as imagens(Cadastrada)temporárias na pasta da aplicação
             //> Monta as imagens(recebidas)
