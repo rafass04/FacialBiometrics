@@ -10,7 +10,6 @@
 
 <script>
 	import Header from './components/shared/Header.vue';
-	import {mapGetters} from 'vuex';
 
 	export default {
 		name: 'app',
@@ -35,11 +34,7 @@
 			link: [
 				{rel: 'icon', href: require('./assets/icon-meio-ambiente.png')}
 			]
-    	},
-
-		computed: {
-            ...mapGetters(['usuarioLogado'])
-        }
+    	}
 	}
 </script>
 

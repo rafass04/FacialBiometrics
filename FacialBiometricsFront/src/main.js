@@ -2,9 +2,8 @@ import Vue from 'vue';
 import App from './App.vue';
 import VueMeta from 'vue-meta';
 
-import store from './js/store';
 import router from './js/rotas';
-import http from './js/security';
+import http from './js/http';
 
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue';
 import {WebCam} from 'vue-cam-vision';
@@ -23,6 +22,5 @@ Vue.prototype.$requisicao = http;
 
 new Vue({
 	router,
-	store: store,
 	render: h => h(App)
 }).$mount("#app");

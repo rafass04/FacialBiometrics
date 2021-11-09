@@ -6,8 +6,6 @@ import Information from '../components/Information.vue';
 import Registration from '../components/Registration.vue';
 import BiometricAuthenticator from '../components/shared/BiometricAuthenticator.vue';
 
-import store from './store';
-
 Vue.use(VueRouter);
 
 const routes = [
@@ -40,7 +38,7 @@ const routes = [
         component: BiometricAuthenticator,
         name: 'biometric-authenticator',
         meta: {
-            public: true
+            public: false
         }
     }
 ];
@@ -48,14 +46,6 @@ const routes = [
 const router = new VueRouter({
 	routes,
     mode: 'history'
-});
-
-router.beforeEach((routeTo, routeFrom, next) => {
-    if(!routeTo.meta.public && !store.state.token) {
-        return next({path: '/'});
-    }
-
-    next();
 });
 
 export default router;

@@ -18,9 +18,7 @@
 								<b-icon icon="camera" font-scale="1.5"></b-icon>
 								<strong>Camera</strong>
 							</li>
-						</ul>
-
-						<hr/> <br/>
+						</ul> <hr/> <br/>
 						
 						<fieldset class="tab">
 							<div class="form-card">
@@ -151,11 +149,14 @@
 
 		methods: {
 			send() {
-				console.log(JSON.stringify(this.userInfo));
-
-				setTimeout(() => {
-					this.$router.push({name: 'login'});
-				}, 3000);
+				this.$requisicao.post('/user/register', this.userInfo)
+					.then((response) => {
+						if(response.status == 200) {
+							setTimeout(() => {
+								this.$router.push({name: 'login'});
+							}, 3000);
+						}
+					})
 			},
 
 			getPhotos(photos) {

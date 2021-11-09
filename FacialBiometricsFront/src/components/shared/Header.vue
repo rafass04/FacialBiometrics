@@ -11,9 +11,7 @@
                 <b-nav-item-dropdown right>
                     <template #button-content>
                         <em>
-                            <b-avatar variant="primary" size="sm"></b-avatar> 
-                            
-                            <span class="user"> {{nome}} </span>
+                            <b-avatar variant="primary" size="sm"></b-avatar>
                         </em>
                     </template>
 
@@ -32,17 +30,10 @@
 
 <script>
     export default {
-        name: 'cabecalho',
-
-        data() {
-            return {
-                nome: this.$store.state.usuario.nome
-            }
-        },
-
         methods: {
             deslogar() {
-                this.$store.commit('DESLOGAR_USUARIO');
+                localStorage.setItem('usuario', {});
+
                 this.$router.push({name: 'login'});
             }
         }
