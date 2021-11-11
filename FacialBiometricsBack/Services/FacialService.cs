@@ -15,9 +15,8 @@ using IronPython.Hosting;
 
 namespace FacialBiometricsBack.Services
 {
-    public class EmguService
+    public class FacialService
     {
-
         public bool CompareImages(List<UsersFacialBiometrics> imgsDb, List<byte[]> imgsRecebidas)
         {
             Image<Gray, byte>[] imgsTraining = new Image<Gray, byte>[3];
@@ -96,28 +95,11 @@ namespace FacialBiometricsBack.Services
                 if (!Directory.Exists(pathUploadReceived))
                     Directory.CreateDirectory(pathUploadReceived);
 
-                pathUploadReceived = pathUploadReceived + "temp_received.jpeg";
+                pathUploadReceived = pathUploadReceived + "received_image.jpeg";
+                pathUploadDatabase = pathUploadDatabase + "database_image.jpeg";
 
-                if (!File.Exists(pathUploadReceived))
-                {
-                    using (var fs = new FileStream(pathUploadReceived, FileMode.Create, FileAccess.Write))
-                    {
-                        fs.Write(imgsRecebidas[0], 0, imgsRecebidas[0].Length);
-                    }
-                }
-
-                if (true)
-                {
-                    foreach (var img in imgsDb)
-                    {
-                        string path = pathUploadDatabase + img.IdUser + img.IdImg + ".jpeg";
-
-                        using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
-                        {
-                            fs.Write(img.ImageBytes, 0, img.ImageBytes.Length);
-                        }
-                    }
-                }
+                CreateImage(pathUploadReceived, imgsRecebidas[0], imgsRecebidas[0].Length);
+                CreateImage(pathUploadDatabase, imgsDb[0].ImageBytes, imgsDb[0].ImageBytes.Length);
                 
                 var result = RunPythonScript();
 
@@ -134,6 +116,17 @@ namespace FacialBiometricsBack.Services
             }
         }
 
+        private void CreateImage(string path, byte[] image, int imageLength)
+        {
+            if (!File.Exists(path))
+            {
+                using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+                {
+                    fs.Write(image, 0, imageLength);
+                }
+            }
+        }
+
         private string RunPythonScript()
         {
             //meio feio, mas tá funcionando
@@ -144,9 +137,9 @@ namespace FacialBiometricsBack.Services
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.UseShellExecute = false;
             process.Start();
-            process.StandardInput.WriteLine("cd C:\\Users\\Luiz\\Desktop\\DEV\\Python\\myenvpy\\Scripts\\");
+            process.StandardInput.WriteLine("cd C:\\Users\\Luiz\\source\\repos\\FacialBiometrics\\myenvpy\\Scripts\\");
             process.StandardInput.WriteLine("activate");
-            process.StandardInput.WriteLine("python teste.py");
+            process.StandardInput.WriteLine("python execute_facial.py");
             process.StandardInput.Flush();
             process.StandardInput.Close();
 

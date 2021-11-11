@@ -133,7 +133,7 @@ namespace FacialBiometricsBack.Services
 
             //> Monta as imagens(Cadastrada)temporárias na pasta da aplicação
             //> Monta as imagens(recebidas)
-            EmguService emguService = new EmguService();
+            FacialService emguService = new FacialService();
 
             bool result = emguService.NewCompareImages(imgsDb, imagensRecebidas);
 
