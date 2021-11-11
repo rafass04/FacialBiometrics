@@ -99,8 +99,7 @@ namespace FacialBiometricsBack.Controllers
             {
                 return Json(new { isValid = false, message = "Invalid Biometric data", statusCode = HttpStatusCode.BadRequest });
             }            
-
-         }
+        }
 
         [HttpGet("articles")]
         public JsonResult getArticles(int idUser){

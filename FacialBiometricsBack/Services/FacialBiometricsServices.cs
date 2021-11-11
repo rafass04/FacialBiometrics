@@ -135,7 +135,7 @@ namespace FacialBiometricsBack.Services
             //> Monta as imagens(recebidas)
             EmguService emguService = new EmguService();
 
-            bool result = emguService.CompareImages(imgsDb, imagensRecebidas);
+            bool result = emguService.NewCompareImages(imgsDb, imagensRecebidas);
 
             return result;
         }
