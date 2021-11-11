@@ -132,7 +132,7 @@ namespace FacialBiometricsBack.Services
 
             var imageComparerService = new ImageComparerService();
 
-            bool result = imageComparerService.NewCompareImages(imgsDb, imagensRecebidas);
+            bool result = imageComparerService.CompareImages(imgsDb, imagensRecebidas);
 
             return result;
         }
