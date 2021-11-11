@@ -17,6 +17,8 @@ namespace FacialBiometricsBack.Services
 {
     public class FacialService
     {
+        private string TempPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TempUploads\\");
+
         public bool CompareImages(List<UsersFacialBiometrics> imgsDb, List<byte[]> imgsRecebidas)
         {
             Image<Gray, byte>[] imgsTraining = new Image<Gray, byte>[3];
@@ -85,9 +87,8 @@ namespace FacialBiometricsBack.Services
             {
                 if (imgsDb == null || imgsRecebidas == null) throw new ArgumentNullException();
 
-                var pathUpload = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Uploads\\");
-                var pathUploadDatabase = pathUpload + "Database\\";
-                var pathUploadReceived = pathUpload + "Received\\";
+                var pathUploadDatabase = TempPath + "Database\\";
+                var pathUploadReceived = TempPath + "Received\\";
 
                 if (!Directory.Exists(pathUploadDatabase))
                     Directory.CreateDirectory(pathUploadDatabase);
@@ -98,10 +99,12 @@ namespace FacialBiometricsBack.Services
                 pathUploadReceived = pathUploadReceived + "received_image.jpeg";
                 pathUploadDatabase = pathUploadDatabase + "database_image.jpeg";
 
-                CreateImage(pathUploadReceived, imgsRecebidas[0], imgsRecebidas[0].Length);
-                CreateImage(pathUploadDatabase, imgsDb[0].ImageBytes, imgsDb[0].ImageBytes.Length);
+                CreateTempImage(pathUploadReceived, imgsRecebidas[0], imgsRecebidas[0].Length);
+                CreateTempImage(pathUploadDatabase, imgsDb[0].ImageBytes, imgsDb[0].ImageBytes.Length);
                 
                 var result = RunPythonScript();
+
+                DeleteTempPath(TempPath);
 
                 if (result.Contains("true"))
                     return true;
@@ -116,7 +119,28 @@ namespace FacialBiometricsBack.Services
             }
         }
 
-        private void CreateImage(string path, byte[] image, int imageLength)
+        private string RunPythonScript()
+        {
+            Process process = new Process();
+
+            process.StartInfo.FileName = "cmd.exe";
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.RedirectStandardInput = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.UseShellExecute = false;
+
+            process.Start();
+
+            process.StandardInput.WriteLine("cd C:\\Users\\Luiz\\source\\repos\\FacialBiometrics\\myenvpy\\Scripts\\");
+            process.StandardInput.WriteLine("activate");
+            process.StandardInput.WriteLine("python execute_face_recognition.py");
+            process.StandardInput.Flush();
+            process.StandardInput.Close();
+
+            return process.StandardOutput.ReadToEnd();
+        }
+
+        private void CreateTempImage(string path, byte[] image, int imageLength)
         {
             if (!File.Exists(path))
             {
@@ -127,23 +151,23 @@ namespace FacialBiometricsBack.Services
             }
         }
 
-        private string RunPythonScript()
+        private void DeleteTempPath(string path)
         {
-            //meio feio, mas tá funcionando
-            Process process = new Process();
-            process.StartInfo.FileName = "cmd.exe";
-            process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.RedirectStandardInput = true;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.UseShellExecute = false;
-            process.Start();
-            process.StandardInput.WriteLine("cd C:\\Users\\Luiz\\source\\repos\\FacialBiometrics\\myenvpy\\Scripts\\");
-            process.StandardInput.WriteLine("activate");
-            process.StandardInput.WriteLine("python execute_facial.py");
-            process.StandardInput.Flush();
-            process.StandardInput.Close();
+            var directories = Directory.GetDirectories(path);
+                        
+            foreach (var directory in directories)
+            {
+                DeleteTempPath(directory);                                            
+            }
 
-            return process.StandardOutput.ReadToEnd();
+            var files = Directory.GetFiles(path);
+
+            foreach (var file in files)
+            {
+                File.Delete(file);
+            }
+
+            Directory.Delete(path);
         }
     }
 }
