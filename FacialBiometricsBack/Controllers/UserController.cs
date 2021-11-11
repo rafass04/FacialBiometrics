@@ -47,7 +47,6 @@ namespace FacialBiometricsBack.Controllers
 
                 }
 
-
                 int idUser = _facialBiometricsService.CreateUser(new UserInfo{
                     NameUser = dadosUser.name,
                     Username = dadosUser.username,

@@ -15,7 +15,7 @@ using IronPython.Hosting;
 
 namespace FacialBiometricsBack.Services
 {
-    public class FacialService
+    public class ImageComparerService
     {
         private string TempPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TempUploads\\");
 

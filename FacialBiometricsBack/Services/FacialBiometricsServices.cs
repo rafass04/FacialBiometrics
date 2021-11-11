@@ -126,16 +126,13 @@ namespace FacialBiometricsBack.Services
             return _dataAccess.GetUserByLevel(idPosition);
         }
 
-        //Criar método para receber imagens a serem comparadas()
         public bool CompareImages(int idUser, List<byte[]> imagensRecebidas)
         {
             List<UsersFacialBiometrics> imgsDb = _dataAccess.GetFacialBiometric(idUser);
 
-            //> Monta as imagens(Cadastrada)temporárias na pasta da aplicação
-            //> Monta as imagens(recebidas)
-            FacialService emguService = new FacialService();
+            var imageComparerService = new ImageComparerService();
 
-            bool result = emguService.NewCompareImages(imgsDb, imagensRecebidas);
+            bool result = imageComparerService.NewCompareImages(imgsDb, imagensRecebidas);
 
             return result;
         }
