@@ -32,7 +32,7 @@
     export default {
         data() {
             return {
-                username: 'Test' /* JSON.parse(localStorage.getItem("user")).username */
+                username: JSON.parse(localStorage.getItem("user")).username
             }
         },
 

@@ -1,5 +1,10 @@
 <template>
-    <div>
+    <div>  
+        <br>
+        <b-list-group>
+            <b-list-group-item>Usuário: {{nameUser}}</b-list-group-item>
+            <b-list-group-item>Nível de acesso: {{getUserPosition()}}</b-list-group-item>
+        </b-list-group>
         <b-carousel
             id="carousel-1"
             :interval="4000"
@@ -11,6 +16,7 @@
             style="text-shadow: 1px 1px 2px #333;"
         >  
             <b-carousel-slide v-for="(article, index) in listArticles" img-blank :key="article.id_article">
+                <span class="badge bg-success">Artigo Nível - {{getArticleLevel(article)}}</span>
                 <b-card :title="article.article_title" :img-src="images[index]" img-alt="Card image" img-left class="mb-3">
                     <b-card-text>
                         {{article.article_content}}
@@ -25,6 +31,10 @@
     export default {
         data() {
             return {
+
+                nameUser: JSON.parse(localStorage.getItem("user")).nameUser,
+                positionUser: JSON.parse(localStorage.getItem("user")).userPositionInfo.idUserPosition,
+
                 listArticles: [
                     {id_article: 1, article_title: 'Amazônia', article_content: 'A floresta tropical amazônica, que cobre boa parte do noroeste do Brasil e se estende até a Colômbia, o Peru e outros países da América do Sul, é a maior floresta tropical do mundo, famosa por sua biodiversidade.', id_user_position: 1},
                     {id_article: 2, article_title: 'Mata Atlântica', article_content: 'A Mata Atlântica é um bioma de floresta tropical que abrange a costa leste, nordeste, sudeste e sul do Brasil, leste do Paraguai e a província de Misiones, na Argentina.', id_user_position: 2},
@@ -33,10 +43,10 @@
                 ],
 
                 images: [
-                    'https://www.bioblog.com.br/wp-content/uploads/2017/03/a-importancia-da-preservacao-do-meio-ambiente.jpg',
-                    'https://lh3.googleusercontent.com/proxy/CWWT5PPMzNCKeMTzq0Y7yNlKI9vxFdUjMOnfLUxt3ut6znCbZOoQnSMiCdsUqYPZAjxLerIkkAStkS5RXwgYj3_7rrtevMuSz3k51AE_1mIXE_g30mpE6nEDNOJ1Oe6x2ng0KTFYBVC3ORt32T65IXXKVA',
-                    'https://www.gov.br/cgu/pt-br/governo-aberto/noticias/2017/principio-10-e-ogp-meio-ambiente-e-governo-aberto/sdf.jpg/@@images/238e2d55-636b-44e3-899c-4a79bdf1791e.jpeg',
-                    'https://brasilsustentaveleditora.com.br/wp-content/uploads/2018/09/001.jpg'
+                    'https://source.unsplash.com/1600x1200/?nature',
+                    'https://source.unsplash.com/1600x1200/?amazonia',
+                    'https://source.unsplash.com/1600x1200/?forest',
+                    'https://source.unsplash.com/1600x1200/?woods',
                 ]
             }
         },
@@ -56,15 +66,35 @@
 
                 this.$requisicao.get('/user/articles', user.id_user_position)
                     .then((response) => {
-
+                        
                     })
+            },
+
+            getUserPosition(){
+            var position = JSON.parse(localStorage.getItem("user")).userPositionInfo.idUserPosition;
+            
+            if(position === 1)
+                return "N1 - Oficial";
+            if(position === 2)
+                return "N2 - Gerente";
+            if(position === 3)
+                return "N3 - Ministro";
+            },
+
+            getArticleLevel(article){
+                if(article.id_user_position === 1)
+                    return "N1 - Oficial";
+                if(article.id_user_position === 2)
+                    return "N2 - Gerente";
+                if(article.id_user_position === 3)
+                    return "N3 - Ministro";
             }
         },
 
         created() {
             //this.getUserByLevel();
             //this.getArticles();
-        }
+        }       
     }
 </script>
 
