@@ -1,9 +1,6 @@
 ﻿using FacialBiometrics.Models;
 using FacialBiometricsBack.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FacialBiometricsBack.Services
 {
@@ -18,9 +15,9 @@ namespace FacialBiometricsBack.Services
         UserInfo Login(string userName, string password);
 
         List<ArticleModel> GetArticles(int idUser);
+
         List<string> GetUsersByLevel(int idPosition);
 
-        public bool CompareImages(int idUser,List<byte[]> imagensRecebidas);
-        
+        public bool CompareImages(int idUser, List<byte[]> receivedImages);
     }
 }

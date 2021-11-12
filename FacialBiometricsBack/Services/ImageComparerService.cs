@@ -1,8 +1,8 @@
-﻿using System;
+﻿using FacialBiometrics.Models;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using FacialBiometrics.Models;
 using System.Diagnostics;
+using System.IO;
 
 namespace FacialBiometricsBack.Services
 {
@@ -30,7 +30,7 @@ namespace FacialBiometricsBack.Services
 
                 CreateTempImage(pathUploadReceived, imgsRecebidas[0], imgsRecebidas[0].Length);
                 CreateTempImage(pathUploadDatabase, imgsDb[0].ImageBytes, imgsDb[0].ImageBytes.Length);
-                
+
                 var result = RunPythonScript();
 
                 DeleteTempPath(TempPath);
@@ -44,7 +44,7 @@ namespace FacialBiometricsBack.Services
             }
             catch (Exception e)
             {
-                throw new Exception("Erro CompareImages: " + e.Message);
+                throw new Exception("Error CompareImages: " + e.Message);
             }
         }
 
@@ -83,10 +83,10 @@ namespace FacialBiometricsBack.Services
         private void DeleteTempPath(string path)
         {
             var directories = Directory.GetDirectories(path);
-                        
+
             foreach (var directory in directories)
             {
-                DeleteTempPath(directory);                                            
+                DeleteTempPath(directory);
             }
 
             var files = Directory.GetFiles(path);

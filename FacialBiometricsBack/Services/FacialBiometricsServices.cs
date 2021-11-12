@@ -3,10 +3,8 @@ using FacialBiometricsBack.DataAccessFacialBiometrics;
 using FacialBiometricsBack.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FacialBiometricsBack.Services
 {
@@ -16,7 +14,6 @@ namespace FacialBiometricsBack.Services
 
         public FacialBiometricsServices(IDataAccessFacialBiometrics dataAccess)
         {
-            //Instanciar classe do EmguCV
             _dataAccess = dataAccess;
         }
 
@@ -25,9 +22,6 @@ namespace FacialBiometricsBack.Services
             try
             {
                 if (userInfo == null) throw new ArgumentNullException(nameof(userInfo));
-
-                //userInfo.SaltPassword = CreateSalt(25);
-                //userInfo.Password = GenerateHash(userInfo.Password, userInfo.SaltPassword);
 
                 return _dataAccess.CreateUser(userInfo);
             }
@@ -65,10 +59,14 @@ namespace FacialBiometricsBack.Services
             }
         }
 
-        public List<ArticleModel> GetArticles(int idUser){
-            try{
+        public List<ArticleModel> GetArticles(int idUser)
+        {
+            try
+            {
                 return _dataAccess.GetArticles(idUser);
-            }catch{
+            }
+            catch
+            {
                 throw;
             }
         }
@@ -77,8 +75,8 @@ namespace FacialBiometricsBack.Services
         {
             try
             {
-                if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(password)) 
-                    throw new ArgumentNullException("Username or password null");
+                if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(password))
+                    throw new ArgumentNullException("Username or password null.");
 
                 var result = _dataAccess.GetUserByUsername(userName);
 
@@ -87,6 +85,7 @@ namespace FacialBiometricsBack.Services
 
                 if (result.Password != password)
                     return null;
+
                 if (result.Password != GenerateHash(password, result.SaltPassword))
                     return null;
 
@@ -122,21 +121,18 @@ namespace FacialBiometricsBack.Services
 
         public List<string> GetUsersByLevel(int idPosition)
         {
-
             return _dataAccess.GetUserByLevel(idPosition);
         }
 
-        public bool CompareImages(int idUser, List<byte[]> imagensRecebidas)
+        public bool CompareImages(int idUser, List<byte[]> receivedImages)
         {
             List<UsersFacialBiometrics> imgsDb = _dataAccess.GetFacialBiometric(idUser);
 
             var imageComparerService = new ImageComparerService();
 
-            bool result = imageComparerService.CompareImages(imgsDb, imagensRecebidas);
+            bool result = imageComparerService.CompareImages(imgsDb, receivedImages);
 
             return result;
         }
-
-        
     }
 }

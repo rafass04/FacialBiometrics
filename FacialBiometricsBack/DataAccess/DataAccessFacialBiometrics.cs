@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace FacialBiometricsBack.DataAccessFacialBiometrics
 {
@@ -12,16 +11,15 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
     {
         private string connectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=RuralPropertiesInformations;Integrated Security=SSPI";
 
-
         public int CreateUser(UserInfo userInfo)
         {
-            string query = "insert into UserInfo values (@P0, @P1, @P2, @P3, @P4); SELECT SCOPE_IDENTITY();";
+            string query = "INSERT INTO UserInfo VALUES (@P0, @P1, @P2, @P3, @P4); SELECT SCOPE_IDENTITY();";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                using(SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.Add(new SqlParameter("P0", userInfo.NameUser));
@@ -37,9 +35,9 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
 
         public void CreateFacialBiometrics(UsersFacialBiometrics userImages)
         {
-            string query = "insert into UsersFacialBiometrics values (@P0, @P1, @P2)";
+            string query = "INSERT INTO UsersFacialBiometrics VALUES (@P0, @P1, @P2)";
 
-            using(SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
@@ -56,12 +54,12 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
 
         public int GetUserPosition(UserInfo userInfo)
         {
-            string query = "select id_user_position from UserInfo where id_user = @P0";
+            string query = "SELECT id_user_position FROM UserInfo WHERE id_user = @P0";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-               
+
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.CommandType = CommandType.Text;
@@ -81,45 +79,48 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
             }
         }
 
-        public List<ArticleModel> GetArticles(int idUser){
-            string query = @"
-                SELECT * FROM ArticleChemicalProduct A 
-                    where A.id_user_position <= (select U.id_user_position FROM UserInfo U WHERE U.id_user= @P0)";
+        public List<ArticleModel> GetArticles(int idUser)
+        {
+            string query = @"SELECT * FROM ArticleChemicalProduct A
+                    WHERE A.id_user_position <= (select U.id_user_position FROM UserInfo U WHERE U.id_user= @P0)";
 
-            using(SqlConnection conn = new SqlConnection(connectionString)){
-                conn.Open();              
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
 
-                using(SqlCommand cmd = new SqlCommand(query,conn)){
-
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
                     cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.Add(new SqlParameter("P0",idUser));
+                    cmd.Parameters.Add(new SqlParameter("P0", idUser));
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     List<ArticleModel> listArticles = new List<ArticleModel>();
 
-                    while(reader.Read()){
-                        listArticles.Add(new ArticleModel{
+                    while (reader.Read())
+                    {
+                        listArticles.Add(new ArticleModel
+                        {
                             idArticle = Convert.ToInt32(reader["id_article"]),
                             title = Convert.ToString(reader["article_title"]),
                             content = Convert.ToString(reader["article_content"])
                         });
                     }
 
-                    return listArticles;  
+                    return listArticles;
                 }
             }
         }
 
         public UserInfo GetUserByUsername(string userName)
         {
-            string query = "select * from UserInfo where username_user = @P0";
+            string query = "SELECT * FROM UserInfo WHERE username_user = @P0";
 
-            using(SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                using(SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.Add(new SqlParameter("P0", userName));
@@ -147,8 +148,7 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
 
         public List<string> GetUserByLevel(int idPosition)
         {
-            string query = @"
-                SELECT name_user FROM UserInfo where id_user_position = @P0";
+            string query = @"SELECT name_user FROM UserInfo WHERE id_user_position = @P0";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -156,7 +156,6 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.Add(new SqlParameter("P0", idPosition));
 
@@ -166,7 +165,7 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
 
                     while (reader.Read())
                     {
-                        listUsers.Add(Convert.ToString(reader["name_user"]));                        
+                        listUsers.Add(Convert.ToString(reader["name_user"]));
                     }
 
                     return listUsers;
@@ -176,13 +175,13 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
 
         public List<UsersFacialBiometrics> GetFacialBiometric(int idUser)
         {
-            string query = @"select * from UsersFacialBiometrics fb where fb.id_user = @P0";
+            string query = @"SELECT * FROM UsersFacialBiometrics fb WHERE fb.id_user = @P0";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                using(SqlCommand cmd = new SqlCommand(query,conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.Add(new SqlParameter("P0", idUser));
@@ -193,19 +192,17 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
 
                     while (reader.Read())
                     {
-                        //(byte[])reader["user_img"]
                         imgs.Add(new UsersFacialBiometrics
                         {
                             IdImg = Convert.ToInt32(reader["id_img"]),
                             ImageName = Convert.ToString(reader["name_img"]),
-                            ImageBytes = (Byte[])reader["user_img"] ,
+                            ImageBytes = (Byte[])reader["user_img"],
                             IdUser = Convert.ToInt32(reader["id_user"])
                         });
                     }
 
                     return imgs;
                 }
-
             }
         }
     }

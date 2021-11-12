@@ -1,13 +1,11 @@
 ﻿using FacialBiometrics.Models;
 using FacialBiometricsBack.Models;
 using FacialBiometricsBack.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace FacialBiometricsBack.Controllers
 {
@@ -23,104 +21,101 @@ namespace FacialBiometricsBack.Controllers
         }
 
         [HttpPost("register")]
-        public JsonResult CadastroUser(UserFrontModel dadosUser)
+        public JsonResult UserRegistration(UserFrontModel userData)
         {
             if (ModelState.IsValid)
             {
-                if (dadosUser.face_images.Count()==0)
+                if (userData.face_images.Count() == 0)
                 {
-                    return Json(new { message = "Nenhuma imagem recebida",statusCode=HttpStatusCode.BadRequest });
+                    return Json(new { message = "No user image received.", statusCode = HttpStatusCode.BadRequest });
                 }
 
-                List<UserFaceImg> imageDados = new List<UserFaceImg>();
+                List<UserFaceImg> imageData = new List<UserFaceImg>();
 
-                foreach(var img in dadosUser.face_images)
+                foreach (var img in userData.face_images)
                 {
-                    string[] imgDados = img.Split(',');
+                    string[] imgData = img.Split(',');
 
-                    imageDados.Add(new UserFaceImg
+                    imageData.Add(new UserFaceImg
                     {
-                        metaData = imgDados[0],
-                        extension = imgDados[0].Split(';')[0].Split('/')[1],
-                        imageBytes = Convert.FromBase64String(imgDados[1])
+                        metaData = imgData[0],
+                        extension = imgData[0].Split(';')[0].Split('/')[1],
+                        imageBytes = Convert.FromBase64String(imgData[1])
                     });
-
                 }
 
-                int idUser = _facialBiometricsService.CreateUser(new UserInfo{
-                    NameUser = dadosUser.name,
-                    Username = dadosUser.username,
-                    Password = dadosUser.password,
-                    UserPositionInfo = new UserPosition{ IdUserPosition = dadosUser.id_user_position}
+                int idUser = _facialBiometricsService.CreateUser(new UserInfo
+                {
+                    NameUser = userData.name,
+                    Username = userData.username,
+                    Password = userData.password,
+                    UserPositionInfo = new UserPosition { IdUserPosition = userData.id_user_position }
                 });
 
-                foreach(var faceImg in imageDados){
-                    _facialBiometricsService.CreateFacialBiometrics(new UsersFacialBiometrics{
+                foreach (var faceImg in imageData)
+                {
+                    _facialBiometricsService.CreateFacialBiometrics(new UsersFacialBiometrics
+                    {
                         ImageName = Guid.NewGuid().ToString(),
                         ImageBytes = faceImg.imageBytes,
                         IdUser = idUser
                     });
                 }
 
-                return Json(new { message = "Cadastrado com sucesso", statusCode = HttpStatusCode.OK });
+                return Json(new { message = "User registered successfully.", statusCode = HttpStatusCode.OK });
             }
             else
             {
-                return Json(new { message = "Cadastro Inválido", statusCode = HttpStatusCode.BadRequest });
+                return Json(new { message = "Invalid registration.", statusCode = HttpStatusCode.BadRequest });
             }
-
         }
 
         [HttpPost("validate")]
-        public JsonResult validateLogin(LoginModel userCredentials){
-
+        public JsonResult validateLogin(LoginModel userCredentials)
+        {
             var user = _facialBiometricsService.Login(userCredentials.username, userCredentials.password);
 
             if (user == null)
-                return Json(new { isValid = false, message = "User Empty - Invalid username or password", statusCode = HttpStatusCode.BadRequest });
+                return Json(new { isValid = false, message = "User Empty - Invalid username or password.", statusCode = HttpStatusCode.BadRequest });
 
-            List<byte[]> imageDados = new List<byte[]>();
+            List<byte[]> imageData = new List<byte[]>();
 
-            //converte as imagens recebidas em 64 para bytes
             foreach (var img64 in userCredentials.face_images)
             {
                 string[] imgDados = img64.Split(',');
-                imageDados.Add(Convert.FromBase64String(imgDados[1]));
+                imageData.Add(Convert.FromBase64String(imgDados[1]));
             }
 
-            //fazer validação da biometria
-            bool resultFaceImgs = _facialBiometricsService.CompareImages(user.IdUser,imageDados);
+            bool resultFaceImgs = _facialBiometricsService.CompareImages(user.IdUser, imageData);
             if (resultFaceImgs)
             {
                 return Json(new { isValid = true, levelAccess = user.UserPositionInfo.IdUserPosition });
             }
             else
             {
-                return Json(new { isValid = false, message = "Invalid Biometric data", statusCode = HttpStatusCode.BadRequest });
-            }            
+                return Json(new { isValid = false, message = "Invalid Biometric data.", statusCode = HttpStatusCode.BadRequest });
+            }
         }
 
         [HttpGet("articles")]
-        public JsonResult getArticles(int idUser){
+        public JsonResult getArticles(int idUser)
+        {
+            Console.WriteLine(">getArticles: idUser(" + idUser + ")");
 
-            Console.WriteLine(">getArticles: idUser("+idUser+")");
-            
             List<ArticleModel> list_articles = _facialBiometricsService.GetArticles(idUser);
 
             return Json(new { listArticles = list_articles });
         }
 
         [HttpGet("levels")]
-        public JsonResult getUserByLevel (int idPosition)
+        public JsonResult getUserByLevel(int idPosition)
         {
             if (idPosition == 0)
-                return Json(new {message = "Nível não especificado." });
+                return Json(new { message = "User level not specified." });
 
             List<string> list_users = _facialBiometricsService.GetUsersByLevel(idPosition);
 
-
-            return Json(new { message ="Sucesso!", list_users = list_users });
+            return Json(new { message = "Job Leveling Successfully!", list_users = list_users });
         }
-
     }
 }

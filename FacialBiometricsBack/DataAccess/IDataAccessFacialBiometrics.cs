@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using FacialBiometrics.Models;
+﻿using FacialBiometrics.Models;
 using FacialBiometricsBack.Models;
+using System.Collections.Generic;
 
 namespace FacialBiometricsBack.DataAccessFacialBiometrics
 {
@@ -15,7 +15,9 @@ namespace FacialBiometricsBack.DataAccessFacialBiometrics
         UserInfo GetUserByUsername(string username);
 
         List<ArticleModel> GetArticles(int idUser);
+
         List<string> GetUserByLevel(int idPosition);
+
         public List<UsersFacialBiometrics> GetFacialBiometric(int idUser);
     }
 }

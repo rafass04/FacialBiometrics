@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
 
 namespace FacialBiometricsBack.Models
 {
@@ -21,6 +19,5 @@ namespace FacialBiometricsBack.Models
 
         [Required]
         public int id_user_position { get; set; }
-
     }
 }
