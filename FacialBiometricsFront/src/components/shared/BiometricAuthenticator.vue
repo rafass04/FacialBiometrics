@@ -73,7 +73,7 @@
               	})
           },  
 
-			sendImage() {    
+			sendImage() {
 				this.show = true;
 				
                 var user = JSON.parse(localStorage.getItem("user"));

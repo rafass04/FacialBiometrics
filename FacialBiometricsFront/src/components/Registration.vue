@@ -41,7 +41,7 @@
 								<input type="password" v-model="userInfo.password" name="password" placeholder="Password" /> 
 								
 								<label class="fieldlabels"> Position:* </label> <br/>
-								<select v-model="userInfo.id_user_position" class="mt-2" name="Setor">
+								<select v-model="userInfo.id_user_position" class="mt-2" name="department">
 									<option value="1"> Minister </option>						
 									<option value="2"> Manager </option>
 									<option value="3"> Official </option>
@@ -49,12 +49,14 @@
 							</div>
 
 							<button type="button" @click="nextPrev(1)" name="next" class="next action-button mt-4"> 
-								Next
+								Next <b-icon icon="arrow-right"></b-icon>
 							</button>
 						
-							<b-button :to="{name: 'login'}" type="button" name="previous" class="button-login mt-4 mr-3">
-								Login
-							</b-button>
+							<div class="d-flex justify-content-start mt-3">
+								<b-button :to="{name: 'login'}" type="button" name="previous" variant="primary" class="button-login mr-3">
+									<b-icon icon="box-arrow-in-left"></b-icon> Login
+								</b-button>
+							</div>
 						</fieldset>
 
 						<fieldset class="tab">
@@ -75,16 +77,18 @@
 							</div>
 
 							<button :disabled="!hasThreeImages" type="button" @click="send(), nextPrev(1)" name="next" class="next action-button">
-								Submit
+								<b-icon icon="check-circle"></b-icon> Submit
 							</button>
 
 							<button type="button" @click="nextPrev(-1)" name="previous" class="previous action-button-previous">
-								Previous
+								<b-icon icon="arrow-left"></b-icon> Previous
 							</button>
 
-							<b-button :to="{name: 'login'}" type="button" name="previous" variant="primary" class="button-login mr-3">
-								Login
-							</b-button>
+							<div class="d-flex justify-content-start">
+								<b-button :to="{name: 'login'}" type="button" name="previous" variant="primary" class="button-login mr-3">
+									<b-icon icon="box-arrow-in-left"></b-icon> Login
+								</b-button>
+							</div>
 						</fieldset>
 
 						<fieldset class="tab">
@@ -309,7 +313,6 @@
 		outline-width: 0
 	}
 
-	/* Repetindo o código, pois, não funciona se como select:focus nos acima */
 	#msform select:focus {
 		border: 1px solid #40826D;
 	}

@@ -11,7 +11,7 @@
                 <b-nav-item-dropdown right>
                     <template #button-content>
                         <em>
-                            <b-avatar variant="primary" size="sm"></b-avatar>
+                            <b-avatar variant="primary" size="sm"></b-avatar> {{username}}
                         </em>
                     </template>
 
@@ -19,7 +19,7 @@
                         <b-icon icon="gear-fill" aria-hidden="true"></b-icon> Profile
                     </b-dropdown-item>
 
-                    <b-dropdown-item @click="deslogar">
+                    <b-dropdown-item @click="logout">
                         <b-icon icon="box-arrow-in-left" aria-hidden="true"></b-icon> Sign Out
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
@@ -30,10 +30,15 @@
 
 <script>
     export default {
-        methods: {
-            deslogar() {
-                localStorage.setItem('usuario', {});
+        data() {
+            return {
+                username: 'Test' /* JSON.parse(localStorage.getItem("user")).username */
+            }
+        },
 
+        methods: {
+            logout() {
+                localStorage.removeItem('user');
                 this.$router.push({name: 'login'});
             }
         }
