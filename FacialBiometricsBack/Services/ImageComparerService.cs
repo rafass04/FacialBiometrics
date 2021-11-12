@@ -25,8 +25,8 @@ namespace FacialBiometricsBack.Services
                 if (!Directory.Exists(pathUploadReceived))
                     Directory.CreateDirectory(pathUploadReceived);
 
-                pathUploadReceived = pathUploadReceived + "received_image.jpeg";
-                pathUploadDatabase = pathUploadDatabase + "database_image.jpeg";
+                pathUploadReceived = pathUploadReceived + "received_image.png";
+                pathUploadDatabase = pathUploadDatabase + "database_image.png";
 
                 CreateTempImage(pathUploadReceived, imgsRecebidas[0], imgsRecebidas[0].Length);
                 CreateTempImage(pathUploadDatabase, imgsDb[0].ImageBytes, imgsDb[0].ImageBytes.Length);

@@ -32,13 +32,13 @@
 								</div> 
 								
 								<label class="fieldlabels">Name: *</label>
-								<input type="text" v-model="userInfo.name_user" name="name" placeholder="Name" />
+								<input type="text" v-model="userInfo.name" name="name" placeholder="Name" />
 
 								<label class="fieldlabels">Username: *</label>
-								<input type="text" v-model="userInfo.username_user" name="username" placeholder="Username" /> 
+								<input type="text" v-model="userInfo.username" name="username" placeholder="Username" /> 
 								
 								<label class="fieldlabels">Password: *</label> 
-								<input type="password" v-model="userInfo.password_user" name="password" placeholder="Password" /> 
+								<input type="password" v-model="userInfo.password" name="password" placeholder="Password" /> 
 								
 								<label class="fieldlabels"> Position:* </label> <br/>
 								<select v-model="userInfo.id_user_position" class="mt-2" name="Setor">
@@ -136,11 +136,11 @@
 			return {
 				userInfo: {
 					id_user: 0,
-					name_user: '',
-					username_user: '',
-					password_user: '',
+					name: '',
+					username: '',
+					password: '',
 					id_user_position: 1,
-					images: []
+					face_images: []
 				},
 
 				currentTab: 0
@@ -160,7 +160,7 @@
 			},
 
 			getPhotos(photos) {
-				this.userInfo.images = photos;
+				this.userInfo.face_images = photos;
 			},
 
 			showTab(numberPage) {
@@ -205,7 +205,7 @@
 
 		computed: {
 			hasThreeImages() {
-				return this.userInfo.images.length == 3;
+				return this.userInfo.face_images.length == 3;
 			}
 		}
     }

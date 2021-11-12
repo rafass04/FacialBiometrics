@@ -70,30 +70,34 @@ namespace FacialBiometricsBack.Controllers
             }
         }
 
-        [HttpPost("validate")]
-        public JsonResult validateLogin(LoginModel userCredentials)
+        [HttpPost("login")]
+        public JsonResult login(LoginModel userCredentials)
         {
             var user = _facialBiometricsService.Login(userCredentials.username, userCredentials.password);
 
             if (user == null)
-                return Json(new { isValid = false, message = "User Empty - Invalid username or password.", statusCode = HttpStatusCode.BadRequest });
+                return Json(new { isValid = false, message = "User Empty - Invalid username or password.", statusCode = HttpStatusCode.Unauthorized });
 
-            List<byte[]> imageData = new List<byte[]>();
+            return Json(new { isValid = true, message = "Login first step completed", user, statusCode = HttpStatusCode.OK });
+        }
 
-            foreach (var img64 in userCredentials.face_images)
-            {
-                string[] imgDados = img64.Split(',');
-                imageData.Add(Convert.FromBase64String(imgDados[1]));
-            }
+        [HttpPost("validate")]
+        public JsonResult validateLogin(UserImageInfo user)
+        {
+            List<byte[]> imageData = new List<byte[]>();  
 
-            bool resultFaceImgs = _facialBiometricsService.CompareImages(user.IdUser, imageData);
+            string[] imgDados = user.image[0].Split(',');
+            imageData.Add(Convert.FromBase64String(imgDados[1]));
+
+            bool resultFaceImgs = _facialBiometricsService.CompareImages(user.idUser, imageData);
+
             if (resultFaceImgs)
             {
-                return Json(new { isValid = true, levelAccess = user.UserPositionInfo.IdUserPosition });
+                return Json(new { isValid = true, statusCode = HttpStatusCode.OK });
             }
             else
             {
-                return Json(new { isValid = false, message = "Invalid Biometric data.", statusCode = HttpStatusCode.BadRequest });
+                return Json(new { isValid = false, message = "Invalid Biometric data.", statusCode = HttpStatusCode.Unauthorized });
             }
         }
 

@@ -22,7 +22,7 @@
                                             </div>
                                         </div>
 
-                                        <input v-model="userInfo.username_user" type="text" class="form-control" id="username" placeholder="Username" />
+                                        <input v-model="userInfo.username" type="text" class="form-control" id="username" placeholder="Username" />
                                     </div>
                                 </div>
 
@@ -36,7 +36,7 @@
                                             </div>
                                         </div>
 
-                                        <input v-model="userInfo.password_user" type="password" class="form-control" id="password" placeholder="Password" />
+                                        <input v-model="userInfo.password" type="password" class="form-control" id="password" placeholder="Password" />
                                     </div>
                                 </div>
 
@@ -97,8 +97,8 @@
         data() {
             return {
                 userInfo: {
-                    username_user: '',
-                    password_user: ''
+                    username: '',
+                    password: ''
                 },
 
                 errorMessage: ''
@@ -108,16 +108,21 @@
         methods: {
             auth() {
                 if(this.validateFields()) {
-                    this.$requisicao.post('/auth/login', this.userInfo)
+                    this.$requisicao.post('/user/login', this.userInfo)
                         .then((response) => {
-                            console.log(response.data);
+                            console.log(response);
 
-                            if(response.status == 200) {
+                            if(response.data.statusCode == 401) {
+                                this.errorMessage = 'Username or password is invalid';
+                            }
+
+                            if(response.data.statusCode == 200) {
+                                localStorage.setItem("user", JSON.stringify(response.data.user))
                                 this.$router.push({name: 'biometric-authenticator'});
                             }
                         })
                         .catch((exception) => {
-                            if(exception.request.status == 401) {
+                            if(exception.request.statusCode == 401) {
                                 this.errorMessage = 'Username or password is invalid';
                             }
                         });
@@ -127,7 +132,7 @@
             },
 
             validateFields() {
-                if(this.userInfo.username_user != '' && this.userInfo.password_user != '') {
+                if(this.userInfo.username != '' && this.userInfo.password != '') {
                     return true;
                 }
 

@@ -42,7 +42,12 @@
                 opacity: 0.85,
 
                 show: false,
-                imagesCap: [],
+                image: [],
+
+                userImageInfo: {
+                    idUser: 0,
+                    image: []
+                },
 
 				errorMessage: ''
             }
@@ -59,12 +64,8 @@
             	let capture = this.$refs.webcam.capture();
 
               	capture.then(base64 => {
-                	this.imagesCap.splice(0)
-                  	this.imagesCap.push(base64)[0]
-
-					console.log('base64: ', base64.split(",")[0])
-					console.log('base64: ', base64.split(",")[1])
-
+                	this.userImageInfo.image.splice(0)
+                  	this.userImageInfo.image.push(base64)[0]
 					this.sendImage();
 					
               	}).catch((e) => {
@@ -75,20 +76,24 @@
 			sendImage() {    
 				this.show = true;
 				
-                this.$requisicao.post('/auth/image', this.imagesCap)
-                    .then(response => {
-                        if(response.status == 200) {
-							console.log(response.data.userInfo);
+                var user = JSON.parse(localStorage.getItem("user"));
+                this.userImageInfo.idUser = user.idUser;
 
+                this.$requisicao.post('/user/validate', this.userImageInfo)
+                    .then(response => {
+                        console.log(response.data.statusCode);
+
+                        if(response.data.statusCode == 401) {
+							this.show = false;
+                            this.errorMessage = 'Invalid Biometric data';
+                        }
+
+                        if(response.data.statusCode == 200) {
 							this.$router.push({name: 'information'});
 						}
                     })
-                    .catch(exception => {
-                        if(exception.request.status == 401) {
-							this.show = false;
-
-                            this.errorMessage = 'Error';
-                        }
+                    .catch(exception => {                        
+                        console.log(exception)
                     })
         	} 
         }
