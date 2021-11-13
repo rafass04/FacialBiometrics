@@ -84,7 +84,7 @@ namespace FacialBiometricsBack.Controllers
         [HttpPost("validate")]
         public JsonResult validateLogin(UserImageInfo user)
         {
-            List<byte[]> imageData = new List<byte[]>();  
+            List<byte[]> imageData = new List<byte[]>();
 
             string[] imgDados = user.image[0].Split(',');
             imageData.Add(Convert.FromBase64String(imgDados[1]));
